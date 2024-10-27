@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokemong TCG Dealer</title>
+    <link rel="icon" href="/ASSETS/images/pokeball.png" type="image/png">
     <link rel="stylesheet" href="/CSS/styles.css">
     <link rel="stylesheet" href="/CSS/pokemon-sets.css">
 </head>
+
 <body>
     <header>
         <h3><img src="./ASSETS/images/pokeball.png">Pokémon Card Store</h3>
@@ -27,14 +30,60 @@
             </div>
         </div>
         <div id="pokemon-set-info">
-            <h3>Set Name: Base</h>
-                <img src="https://images.pokemontcg.io/base1/logo.png" alt="">
             <div id="info">
-
+                <img src="https://images.pokemontcg.io/sv5/logo.png" alt="">
+                <div id="right-panel-info">
+                    <h3>Set Name: Temporal Forces</h3>
+                    <h4>Total Cards: 120</h4>
+                    <h4>Release Date: 2024-01-01</h4>
+                    <img src="https://images.pokemontcg.io/sv5/symbol.png" alt="">
+                </div>
+            </div>
+            <div id="collection">
+                <div id="filter">
+                    <p>Sorted by</p>
+                    <select name="" id="">
+                            <option value="">Set/Number</option>
+                            <option value="">Name</option>
+                            <option value="">Rarity</option>
+                    </select>
+                    <select name="" id="">
+                        <option value="">Asc</option>
+                        <option value="">Desc</option>
+                </select>
+                </div>
+                <div id="cards">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                    <img src="https://images.pokemontcg.io/g1/1_hires.png" alt="" class="selectable">
+                </div>
+                <div id="change-page-buttons">
+                    <button id="prev-page-button">Prev Page</button>
+                    <a href="" id="current-page">1</a>
+                    <a href="">2</a>
+                    <a href="">3</a>
+                    <button id="next-page-button">Next Page</button>
+                </div>
             </div>
         </div>
     </main>
-    <footer><h3>Pokémon Card Store</h3></footer>
+    <footer>
+        <h3>Pokémon Card Store</h3>
+    </footer>
     <script src="/JS/codigo.js" type="module"></script>
 </body>
+
 </html>

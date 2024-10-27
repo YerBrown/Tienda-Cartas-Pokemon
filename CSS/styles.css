@@ -14,10 +14,13 @@ body, html {
     padding: 0;
     margin: 0;
     font-family: var(--font-general);
+    background-color: var(--color-6);
 }
 header, footer {
     width: 100vw;
-    background-color: black;
+    box-sizing: border-box;
+    overflow: scroll;
+    background-color: var(--color-6);
     color: var(--color-5);
 }
 
@@ -100,4 +103,14 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.selectable {
+    transition: transform .2s, box-shadow .2s ease-in-out;
+    transform: scale(1) translateY(0);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 1);
+}
+.selectable:hover {
+    transform: scale(1.05) translateY(-1px);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 1);
 }

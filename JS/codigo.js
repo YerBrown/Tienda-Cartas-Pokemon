@@ -61,4 +61,4 @@ function loadAllSets() {
     setsGrid.appendChild(setTitle);
   }
 }
-initialiceWebPage();
+// initialiceWebPage();

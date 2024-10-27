@@ -47,7 +47,9 @@ class CardsDataBase {
         new Set(
           newSetData.data[0].id,
           newSetData.data[0].name,
+          newSetData.data[0].series,
           newSetData.data[0].total,
+          newSetData.data[0].releaseDate,
           newSetData.data[0].images,
           collection.data
         )

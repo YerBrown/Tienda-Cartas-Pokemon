@@ -66,7 +66,7 @@ export async function getSetById(id) {
     page: 1,
     pageSize: 20,
     orderBy: "releaseDate",
-    select: "id,name,total,images",
+    select: "id,name,series,total,releaseDate,images",
   };
   const data = await fetchData("v2/sets", params);
   return data;
