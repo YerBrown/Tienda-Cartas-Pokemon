@@ -204,5 +204,5 @@ function openCardModal(cardId) {
   mainParent.appendChild(modalParent);
 }
 
-initialiceCollectionMenu();
+// initialiceCollectionMenu();
 function initialiceSelectSetsMenu() {}

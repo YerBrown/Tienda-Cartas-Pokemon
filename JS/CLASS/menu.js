@@ -2,7 +2,7 @@ class Menu{
     constructor(parentId){
         this.parentId = parentId;
         this.parent = document.getElementById(parentId);
-        this.mainNode = this.createMenu;
+        this.mainNode = this.createMenu();
         
     }
     loadMenu(){
