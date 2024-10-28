@@ -21,7 +21,7 @@ async function fetchData(pathName, params = {}) {
     const response = await fetch(url.toString(), OPTIONS);
 
     const data = await response.json();
-    // console.log(url.toString(), data);
+    console.log(url.toString(), data);
     return data;
   } catch (error) {
     console.error(error);
@@ -80,7 +80,7 @@ export async function getAllSets(q, page, pageSize, orderBy, select) {
   const data = await fetchData("v2/sets", params);
   return data;
 }
-export async function getCardsBySet(setId){
-    const data = await searchCards('set.id:'+setId, 1, 250, 'number','');
+export async function getCardsBySet(setId, page, pageSize, sortBy){
+    const data = await searchCards('set.id:'+setId, page, pageSize, sortBy,'');
     return data;
 }

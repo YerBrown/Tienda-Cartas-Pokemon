@@ -41,7 +41,7 @@ function createCard(tag, addedId, addedClasses, imgUrl) {
   parent.appendChild(card);
 }
 
-export function createHTMLElement(tag, addedId, addedClasses) {
+export function createHTMLElement(tag, addedId = "", addedClasses = []) {
   const htmlElement = document.createElement(tag);
   htmlElement.id = addedId;
   for (const newClass of addedClasses) {
