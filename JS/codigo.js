@@ -49,8 +49,13 @@ export function createHTMLElement(tag, addedId = "", addedClasses = []) {
   }
   return htmlElement;
 }
-export function createImgElement(src, alt, addedId = "", addedClasses = []){
-  const newImage = createHTMLElement('img', addedId, addedClasses )
+export function createImgElement(
+  src,
+  alt = "",
+  addedId = "",
+  addedClasses = []
+) {
+  const newImage = createHTMLElement("img", addedId, addedClasses);
   newImage.src = src;
   newImage.alt = alt;
   return newImage;

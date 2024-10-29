@@ -8,11 +8,13 @@
 }
 
 #select-set-submenu {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 #sets-grid {
   display: grid;
   box-sizing: border-box;
@@ -36,6 +38,7 @@
   border-radius: 10px;
   background-color: white;
 }
+
 .set-title img {
   width: 100%;
   object-fit: scale-down;
@@ -48,6 +51,9 @@
   flex-direction: column;
   width: 100vw;
   background-color: rgb(210, 210, 210);
+  background-image: url('../ASSETS/images/a1TKOxQ.jpeg');
+  background-repeat: repeat();
+  background-size: 60vw 60vw;
   box-sizing: border-box;
 }
 
@@ -57,7 +63,8 @@
   grid-template-rows: 25vh;
   flex-direction: row;
   align-items: center;
-  background-color: rgb(141, 141, 141);
+  background-color: rgba(141, 141, 141, 0.5);
+  outline: 2px solid black;
   border-radius: 10px;
   margin: 10px;
   overflow: hidden;
@@ -71,13 +78,12 @@
   justify-content: center;
   box-sizing: border-box;
   height: 100%;
-  width: 100%;
   gap: 5px;
   padding: 10px;
-  background-color: rgb(116, 116, 116);
+  /* background-color: rgb(116, 116, 116); */
 }
 
-#info > img {
+#info>img {
   width: 100%;
   min-width: 200px;
   max-width: 20vw;
@@ -104,21 +110,24 @@
 }
 
 #collection {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  background-color: rgb(141, 141, 141);
+  background-color: rgb(141, 141, 141, 0.5);
+  outline: 2px solid black;
   border-radius: 10px;
-  margin: 10px;
+  margin: 0 10px 10px 10px;
   overflow: hidden;
   box-sizing: border-box;
+  align-items: center;
 }
 
 #collection #filter {
   display: flex;
   flex-direction: row;
-  background-color: rgb(116, 116, 116);
+  /* background-color: rgb(116, 116, 116); */
   gap: 10px;
 }
 
@@ -135,21 +144,44 @@
 }
 
 .pokemon-card {
+  position: relative;
   display: flex;
   width: 100%;
   height: 100%;
-  position: relative;
-  box-sizing: border-box;
   border-radius: 1vw;
+  overflow: hidden;
+  justify-content: center;
 }
 
+.pokemon-card img {
+  width: 100%;
+}
+
+.pokemon-card .card-number-text {
+  position: absolute;
+  /* background-color: white; */
+
+  color: white;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  margin: 0 5%;
+  font-size: 2vw;
+  font-weight: bold;
+}
 
 #collection #change-page-buttons {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background-color: rgb(116, 116, 116);
+  padding: 10px;
+  background-color: rgb(72, 72, 72);
+  border-radius: 10px;
+}
+
+#change-page-buttons button {
+  padding: 10px;
 }
 
 #collection #change-page-buttons a {
@@ -167,6 +199,7 @@
   font-weight: bold;
   text-decoration: underline;
 }
+
 #card-modal-parent {
   position: fixed;
   top: 0;
@@ -178,22 +211,32 @@
   align-items: center;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.808);
-  padding: 10vh 10vw;
+  padding: 60px 10vw 10vh 10vw;
 }
 
-#card-modal-parent #card-modal-image {
+#card-modal-parent img {
   width: 100%;
-  max-width: 60vw;
-  max-height: 80vh;
+  max-width: 70vw;
+  max-height: 70vh;
   object-fit: scale-down;
 }
+
 #card-modal-close-button {
   position: absolute;
-  top: 3vh;
+  top: 60px;
   width: 20vw;
   height: 5vh;
   font-weight: bold;
   font-size: 1.2em;
+}
+
+#go-back-button {
+  position: fixed;
+  top: 60px;
+  left: 15px;
+  padding: 10px;
+  z-index: 10;
+  border-radius: 50px;
 }
 
 @media (max-width: 500px) {
@@ -210,7 +253,7 @@
     flex-direction: row;
   }
 
-  #info > img {
+  #info>img {
     max-width: 50vw;
     max-height: 10vh;
     height: 90%;

@@ -12,7 +12,8 @@ class PokemonSetsMenu extends Menu {
     this.totalPages;
     this.currentSortBy = "number";
     this.currentSortByDirection = "";
-    this.currentCardList = new CardList();
+    this.allSetsData = null;
+    this.currentCardList = null;
   }
   createMenu() {
     const menu = createHTMLElement("div", "pokemon-sets-menu", ["menu"]);
@@ -42,7 +43,6 @@ class PokemonSetsMenu extends Menu {
   }
   createCardModal() {
     this.cardModal = createHTMLElement("div", "card-modal-parent");
-    this.cardModal.style.displa = "none";
 
     const closeButton = createHTMLElement("button", "card-modal-close-button");
     closeButton.innerText = "Close";
@@ -51,7 +51,8 @@ class PokemonSetsMenu extends Menu {
     });
 
     this.cardModalImg = createImgElement(
-      "././ASSETS/images/pokemon-card-back.webp"
+      "././ASSETS/images/pokemon-card-back.webp",
+      "Default card"
     );
     this.cardModal.append(closeButton, this.cardModalImg);
   }
@@ -60,7 +61,9 @@ class PokemonSetsMenu extends Menu {
 
     const setInfoPanel = this.createSelectedSetInfoPanel();
     const setCollectionPanel = this.createSetCollectionPanel();
+    this.createGoBackButton();
     this.createLoadingModal();
+
     this.setInfo.append(setInfoPanel, setCollectionPanel);
   }
   createSelectedSetInfoPanel() {
@@ -91,9 +94,15 @@ class PokemonSetsMenu extends Menu {
 
     const filterPanel = this.createCollectionFilterPanel();
     this.collectionGrid = this.createCollectionGridPanel();
-    this.changePagePanel = this.createCollectionChangePagePanel();
+    this.changePagePanelTop = this.createCollectionChangePagePanel();
+    this.changePagePanelBottom = this.createCollectionChangePagePanel();
 
-    collection.append(filterPanel, this.collectionGrid, this.changePagePanel);
+    collection.append(
+      filterPanel,
+      this.changePagePanelTop,
+      this.collectionGrid,
+      this.changePagePanelBottom
+    );
     return collection;
   }
   createCollectionFilterPanel() {
@@ -150,25 +159,25 @@ class PokemonSetsMenu extends Menu {
     const collectionGridPanel = createHTMLElement("div", "collection-grid");
     for (let i = 0; i < this.currentPageSize; i++) {
       const newCard = this.createCollectionCard();
-      collectionGridPanel.appendChild(collectionGridPanel);
+      collectionGridPanel.appendChild(newCard);
     }
     return collectionGridPanel;
   }
   createCollectionChangePagePanel() {
     const changePagePanel = createHTMLElement("div", "change-page-buttons");
     // Crear prev button
-    this.prevButton = createHTMLElement("button", "prev-page-button");
-    this.prevButton.innerText = "Prev Page";
-    this.prevButton.addEventListener("click", () => {
+    const prevButton = createHTMLElement("button", "prev-page-button");
+    prevButton.innerText = "Prev Page";
+    prevButton.addEventListener("click", () => {
       if (this.currentPage > 1) {
         --this.currentPage;
         this.updateCollectionPanel();
       }
     });
     // Crear next button
-    this.nextButton = createHTMLElement("button", "next-page-button");
-    this.nextButton.innerText = "Next Page";
-    this.nextButton.addEventListener("click", () => {
+    const nextButton = createHTMLElement("button", "next-page-button");
+    nextButton.innerText = "Next Page";
+    nextButton.addEventListener("click", () => {
       if (this.currentPage < this.totalPages) {
         ++this.currentPage;
         this.updateCollectionPanel();
@@ -177,9 +186,18 @@ class PokemonSetsMenu extends Menu {
     // Crear pagina uno de ejemplo
     const pageNumberButton = createHTMLElement("a", "", ["page-number-button"]);
     pageNumberButton.innerText = 1;
-    changePagePanel.append(this.prevButton, pageNumberButton, this.nextButton);
+    changePagePanel.append(prevButton, pageNumberButton, nextButton);
 
     return changePagePanel;
+  }
+  createGoBackButton() {
+    this.backButton = createHTMLElement("button", "go-back-button");
+    this.backButton.innerText = "Go Back";
+    this.backButton.addEventListener("click", () => {
+      this.openSetSelectionPanel();
+      super.scrollToTop();
+    });
+    this.setInfo.appendChild(this.backButton);
   }
   createLoadingModal() {
     this.loadingModal = createHTMLElement("div", "", ["loading-modal"]);
@@ -189,10 +207,14 @@ class PokemonSetsMenu extends Menu {
 
     this.loadingModal.append(loadingText, loadingIcon);
   }
-  openSetSelectionPanel() {
+  async openSetSelectionPanel() {
     this.mainNode.innerHTML = "";
     this.mainNode.appendChild(this.selectSet);
-    this.loadAllSet();
+    if (this.allSetsData == null) {
+      this.addLoadingModal(this.selectSet.id);
+      await this.loadAllSet();
+      this.removeLoadingModal();
+    }
   }
   async loadAllSet() {
     const setsId = [
@@ -232,7 +254,16 @@ class PokemonSetsMenu extends Menu {
     this.currentSortByDirection = "";
 
     this.updateSetInfoPanel();
+    this.resetCollectionGrid();
     this.updateCollectionPanel();
+  }
+  resetCollectionGrid() {
+    this.collectionGrid.innerHTML = "";
+    for (let i = 0; i < this.currentPageSize; i++) {
+      const newCard = this.createCollectionCard();
+      this.collectionGrid.appendChild(newCard);
+    }
+    console.log("Collection reset");
   }
   updateSetInfoPanel() {
     this.setInfoLogo.src = this.currentSet.images.logo;
@@ -249,40 +280,61 @@ class PokemonSetsMenu extends Menu {
     ]);
     const newLogoImg = createImgElement(setData.images.logo);
     newSetLogo.appendChild(newLogoImg);
-
+    newSetLogo.href = "#pokemon-set-info";
     newSetLogo.addEventListener("click", () => {
       this.openSetInfoPanel(setData);
+      super.scrollToTop();
     });
     return newSetLogo;
   }
   async updateCollectionPanel() {
-    this.addLoadingModal();
+    this.addLoadingModal("collection");
+    // super.scrollToTop();
     const pageCards = await getCardsBySet(
       this.currentSet.id,
       this.currentPage,
       this.currentPageSize,
       this.currentSortByDirection + this.currentSortBy
     );
-    this.removeLoadingModal();
+
     this.currentCardList = new CardList(pageCards.data);
     if (this.currentPage == pageCards.page) {
       this.totalPages = Math.ceil(pageCards.totalCount / this.currentPageSize);
-      
+      const imagesUrl = [];
+      for (const card of this.currentCardList.allCards) {
+        imagesUrl.push(card.images.large);
+      }
+      await this.loadImagesBeforRendering(imagesUrl);
       this.collectionGrid.innerHTML = "";
-      for (const card of pageCards.data) {
+      for (const card of this.currentCardList.allCards) {
         this.collectionGrid.appendChild(this.createCollectionCard(card));
       }
-      this.updateCollectionPageButtons();
+      this.updateCollectionPageButtons(this.changePagePanelTop);
+      this.updateCollectionPageButtons(this.changePagePanelBottom);
     }
+    this.removeLoadingModal();
   }
-  updateCollectionPageButtons() {
-    this.changePagePanel.innerHTML = "";
+  async loadImagesBeforRendering(urls) {
+    const images = urls.map((url) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => resolve(img);
+      });
+    });
+
+    const loadedImages = await Promise.all(images);
+  }
+  updateCollectionPageButtons(changePagePanel) {
+    const prevButton = changePagePanel.querySelector("#prev-page-button");
+    const nextButton = changePagePanel.querySelector("#next-page-button");
+    changePagePanel.innerHTML = "";
     if (this.currentPage == 1) {
-      this.prevButton.classList.add("disabled-button");
+      prevButton.classList.add("disabled-button");
     } else {
-      this.prevButton.classList.remove("disabled-button");
+      prevButton.classList.remove("disabled-button");
     }
-    this.changePagePanel.appendChild(this.prevButton);
+    changePagePanel.appendChild(prevButton);
     for (let i = 0; i < this.totalPages; i++) {
       const pageNumberButton = createHTMLElement("a", "", [
         "page-number-button",
@@ -290,38 +342,45 @@ class PokemonSetsMenu extends Menu {
       pageNumberButton.innerText = i + 1;
       pageNumberButton.id = i + 1 == this.currentPage ? "current-page" : "";
       pageNumberButton.addEventListener("click", () => {
-        this.currentPage = i + 1;
-        this.updateCollectionPanel();
+        if (i + 1 != this.currentPage) {
+          this.currentPage = i + 1;
+          this.updateCollectionPanel();
+        }
       });
-      this.changePagePanel.appendChild(pageNumberButton);
+      changePagePanel.appendChild(pageNumberButton);
     }
     if (this.currentPage == this.totalPages) {
-      this.nextButton.classList.add("disabled-button");
+      nextButton.classList.add("disabled-button");
     } else {
-      this.nextButton.classList.remove("disabled-button");
+      nextButton.classList.remove("disabled-button");
     }
-    this.changePagePanel.appendChild(this.nextButton);
+    changePagePanel.appendChild(nextButton);
   }
   createCollectionCard(cardInfo = null) {
-    const newCard = createImgElement(
+    const newCard = createHTMLElement("div", "", [
+      "pokemon-card",
+      "selectable",
+    ]);
+    const cardImg = createImgElement(
       "./ASSETS/images/pokemon-card-back.webp",
-      "default card",
-      "",
-      ["pokemon-card", "selectable"]
+      "default card"
     );
-
+    newCard.appendChild(cardImg);
     if (cardInfo == null) {
       return newCard;
     }
 
     const randomNumber = Math.floor(Math.random() * 101);
     if (randomNumber < 70) {
-      newCard.src = cardInfo.images.large;
+      cardImg.src = cardInfo.images.large;
       newCard.addEventListener("click", () => {
         this.openCardModal(cardInfo.id);
       });
     } else {
-      newCard.src = "./ASSETS/images/pokemon-card-back.webp";
+      cardImg.src = "./ASSETS/images/pokemon-card-back.webp";
+      const cardNumber = createHTMLElement("p", "", ["card-number-text"]);
+      cardNumber.innerText = cardInfo.number + " / " + this.currentSet.total;
+      newCard.appendChild(cardNumber);
     }
     return newCard;
   }
@@ -329,15 +388,19 @@ class PokemonSetsMenu extends Menu {
     const findedCard = this.currentCardList.getCardById(id);
     if (findedCard != null) {
       this.cardModalImg.src = findedCard.images.large;
+      this.cardModalImg.alt = "Card of " + findedCard.name;
     }
     this.mainNode.appendChild(this.cardModal);
   }
   closeCardModal() {
     this.cardModal.parentNode.removeChild(this.cardModal);
   }
-  addLoadingModal() {
-    const parent = document.getElementById('pokemon-set-info')
-    parent.append(this.loadingModal);
+  addLoadingModal(parentId) {
+    const parent = document.getElementById(parentId);
+    console.log(parent);
+    if (parent!=null) {
+      parent.appendChild(this.loadingModal);
+    }
   }
   removeLoadingModal() {
     this.loadingModal.parentNode.removeChild(this.loadingModal);

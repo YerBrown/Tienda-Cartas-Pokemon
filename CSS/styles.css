@@ -11,6 +11,7 @@
   --color-5: white;
   --color-6: #0d0d0d;
 }
+
 body,
 html {
   height: 100%;
@@ -19,6 +20,7 @@ html {
   font-family: var(--font-general);
   background-color: var(--color-6);
 }
+
 header,
 footer {
   width: 100vw;
@@ -32,22 +34,33 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  position: fixed;
   top: 0;
   left: 0;
-  padding: 10px;
-  gap: 20px;
   z-index: 10;
+  height: 5vh;
+  min-height: 50px;
+  gap: 20px;
+  padding: 10px 20px;
 }
-header h3 {
+
+header #page-title {
   display: flex;
   align-items: center;
   gap: 5px;
   margin: 0;
-  font-family: var(--font-title-1);
 }
+
+header h3 {
+  font-family: var(--font-title-1);
+  margin: 0;
+}
+
 header img {
   width: 20px;
 }
+
 header ul {
   display: flex;
   align-items: center;
@@ -62,9 +75,24 @@ header ul {
 header a {
   text-decoration: none;
   color: var(--color-5);
+  cursor: pointer;
 }
+
 header a:hover {
   text-decoration: underline;
+}
+
+#coins-panel {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  color: white;
+  font-weight: bold;
+  height: 100%;
+  align-items: center;
+}
+#coins-panel p {
+  margin: 0;
 }
 main {
   display: flex;
@@ -74,12 +102,14 @@ main {
   justify-content: center;
   align-items: center;
   background-color: var(--color-5);
+  padding-top: max(5vh, 50px);
 }
 
 footer {
   bottom: 0;
   right: 0;
 }
+
 #collection-grid {
   display: grid;
   width: 100%;
@@ -105,28 +135,42 @@ footer {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 1);
   cursor: pointer;
 }
+
 .selectable:hover {
   transform: scale(1.05) translateY(-1px);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 1);
 }
+
 button {
   background-color: white;
   border-radius: 5px;
   border: 0;
-}
-button:hover {
+  cursor: pointer;
+  box-shadow: 0 2px 10px black;
+  transition: outline .2s linear;
   outline: 2px solid black;
 }
+
+button:hover {
+  outline: 4px solid black;
+}
+
 button:active {
   background-color: rgb(209, 209, 209);
 }
+
 .disabled-button {
   color: gray;
   background-color: rgba(255, 255, 255, 0.476);
   outline: 0;
 }
+
 .disabled-button:hover {
   outline: none;
+}
+
+select {
+  cursor: pointer;
 }
 
 .loading-modal {
@@ -141,7 +185,17 @@ button:active {
   background-color: rgba(0, 0, 0, 0.687);
   color: white;
 }
+
+.loading-modal p {
+  font-size: 3vw;
+}
+
 .loading-modal img {
-    width: 70px;
-    display: none;
+  width: 70px;
+  display: none;
+}
+
+@media (max-height: 700px){
+  header {
+  }
 }
