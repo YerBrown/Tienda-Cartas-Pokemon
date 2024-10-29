@@ -1,43 +1,92 @@
-#shop-menu-parent {
-    display: flex;
+#shop-menu {
+  display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
-  background-image: url('../ASSETS/images/a1TKOxQ.jpeg');
+  background-image: url("../ASSETS/images/a1TKOxQ.jpeg");
   background-repeat: repeat();
   background-size: 60vw 60vw;
 }
 
-#main-ofer-carusell {
-    display: flex;
-    background-color: rgba(0, 0, 0, 0.5);
-    height: 30vh;
+#shop-top-panel {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 30vh;
+  justify-content: center;
+  align-items: center;
 }
 
-#main-ofer-carusell img {
-    width: 100%;
-    object-fit: scale-down;
+#shop-bottom-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: 200px auto;
+  background-color: rgba(255, 255, 255, 0.892);
 }
 
-#shop-parent{
-    display: grid;
-    grid-template-columns: 200px auto;
-    flex: 1;
-    background-color: rgba(255, 255, 255, 0.892);
-}
-#shop-parent #shop-filter{
-    display: flex;
-    flex-direction: column;
-    background-color: rgba(209, 209, 209, 0.752);
-    justify-content: right;
+#shop-filter-panel {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(209, 209, 209, 0.752);
+  justify-content: right;
 }
 
-#shop-parent #products-grid{
-    background-color: rgba(184, 184, 184, 0.892);
-
+.filter-input-container {
+  display: flex;
+  justify-content: left;
+  padding: 0 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
-#product-filter-option {
-    display: flex;
-    justify-content: right;
-    padding: 0 10px;
+
+#product-filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#products-view-grid {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, 20vw);
+  grid-template-rows: repeat(auto-fit, 20vw);
+  gap: 2vw;
+  border-radius: 1vw;
+  background-color: rgba(184, 184, 184, 0.892);
+  margin: 1vw;
+  padding: 1vw;
+}
+
+.product-box {
+  background-color: white;
+  border-radius: 1vw;
+  padding: 1vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  gap: 0.5vw;
+}
+.product-box p {
+  margin: 0;
+  width: 100%;
+  font-size: 1.1vw;
+  font-weight: bold;
+}
+
+.product-box > img {
+  width: 90%;
+  height: 75%;
+  object-fit: contain;
+}
+
+.product-box .price-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.5vw;
+}
+
+.price-container img {
+  width: 1.1vw;
 }

@@ -198,35 +198,27 @@ class PokemonSetsMenu extends Menu {
       super.scrollToTop();
     });
     this.setInfo.appendChild(this.backButton);
-  }
-  createLoadingModal() {
-    this.loadingModal = createHTMLElement("div", "", ["loading-modal"]);
-    const loadingText = createHTMLElement("p");
-    loadingText.innerText = "Loading data...";
-    const loadingIcon = createImgElement("./ASSETS/images/cargando.png");
-
-    this.loadingModal.append(loadingText, loadingIcon);
-  }
+  } 
   async openSetSelectionPanel() {
     this.mainNode.innerHTML = "";
     this.mainNode.appendChild(this.selectSet);
     if (this.allSetsData == null) {
-      this.addLoadingModal(this.selectSet.id);
+      super.addLoadingModal(this.selectSet.id);
       await this.loadAllSet();
-      this.removeLoadingModal();
+      super.removeLoadingModal();
     }
   }
   async loadAllSet() {
     const setsId = [
-      "base1",
-      "neo1",
-      "ex1",
-      "dp1",
-      "bw1",
-      "xy1",
-      "sm1",
-      "swsh1",
-      "sv1",
+      "sm11",
+      "swsh5",
+      "swsh7",
+      "swsh8",
+      "sv3pt5",
+      "sv4",
+      "sv5",
+      "sv6",
+      "sv7",
     ];
     const promesas = setsId.map((id) => getSetById(id));
     this.allSetsData = [];
@@ -288,7 +280,7 @@ class PokemonSetsMenu extends Menu {
     return newSetLogo;
   }
   async updateCollectionPanel() {
-    this.addLoadingModal("collection");
+    super.addLoadingModal("collection");
     // super.scrollToTop();
     const pageCards = await getCardsBySet(
       this.currentSet.id,
@@ -304,7 +296,7 @@ class PokemonSetsMenu extends Menu {
       for (const card of this.currentCardList.allCards) {
         imagesUrl.push(card.images.large);
       }
-      await this.loadImagesBeforRendering(imagesUrl);
+      await super.loadImagesBeforRendering(imagesUrl);
       this.collectionGrid.innerHTML = "";
       for (const card of this.currentCardList.allCards) {
         this.collectionGrid.appendChild(this.createCollectionCard(card));
@@ -312,18 +304,7 @@ class PokemonSetsMenu extends Menu {
       this.updateCollectionPageButtons(this.changePagePanelTop);
       this.updateCollectionPageButtons(this.changePagePanelBottom);
     }
-    this.removeLoadingModal();
-  }
-  async loadImagesBeforRendering(urls) {
-    const images = urls.map((url) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = url;
-        img.onload = () => resolve(img);
-      });
-    });
-
-    const loadedImages = await Promise.all(images);
+    super.removeLoadingModal();
   }
   updateCollectionPageButtons(changePagePanel) {
     const prevButton = changePagePanel.querySelector("#prev-page-button");
@@ -395,15 +376,6 @@ class PokemonSetsMenu extends Menu {
   closeCardModal() {
     this.cardModal.parentNode.removeChild(this.cardModal);
   }
-  addLoadingModal(parentId) {
-    const parent = document.getElementById(parentId);
-    console.log(parent);
-    if (parent!=null) {
-      parent.appendChild(this.loadingModal);
-    }
-  }
-  removeLoadingModal() {
-    this.loadingModal.parentNode.removeChild(this.loadingModal);
-  }
+  
 }
 export default PokemonSetsMenu;

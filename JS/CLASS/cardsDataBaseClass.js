@@ -3,9 +3,7 @@ import {
   getSubTypes,
   getSuperTypes,
   getRarities,
-  getSetById,
-  searchCards,
-  getCardsBySet,
+  getAllSets,
 } from "../apiCallController.js";
 import Set from "./setData.js";
 class CardsDataBase {
@@ -17,12 +15,14 @@ class CardsDataBase {
     this.sets = [];
   }
   async loadDataBase() {
-    await this.saveTypes();
-    await this.saveSubtypes();
-    await this.saveSupertypes();
-    await this.saveRarities();
-    await this.saveSets();
-    console.log(this);
+    const promesas = [];
+    promesas.push(this.saveTypes());
+    promesas.push(this.saveSubtypes());
+    promesas.push(this.saveSupertypes());
+    promesas.push(this.saveRarities());
+    promesas.push(this.saveSets());
+
+    await Promise.all(promesas);
   }
   async saveTypes() {
     this.types = await getTypes();
@@ -37,24 +37,14 @@ class CardsDataBase {
     this.rarities = await getRarities();
   }
   async saveSets() {
-    const setsId = ['base1', 'neo1', 'ex1', 'dp1', 'bw1', 'xy1', 'sm1', 'swsh1', 'sv1'];
-    // const setsId = ["base1", "neo1"];
-    for (const id of setsId) {
-      const newSetData = await getSetById(id);
-      console.log(newSetData.data[0]);
-      const collection = await getCardsBySet(id);
-      this.sets.push(
-        new Set(
-          newSetData.data[0].id,
-          newSetData.data[0].name,
-          newSetData.data[0].series,
-          newSetData.data[0].total,
-          newSetData.data[0].releaseDate,
-          newSetData.data[0].images,
-          collection.data
-        )
-      );
+    const setResponse = await getAllSets();
+    this.sets = setResponse.data;
+  }
+  getSetById(id) {
+    if (this.sets.length > 0) {
+      return this.sets.find((set) => set.id == id);
     }
+    return "default";
   }
 }
 export default CardsDataBase;

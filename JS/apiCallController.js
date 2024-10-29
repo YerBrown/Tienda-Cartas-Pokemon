@@ -71,11 +71,11 @@ export async function getSetById(id) {
   const data = await fetchData("v2/sets", params);
   return data;
 }
-export async function getAllSets(q, page, pageSize, orderBy, select) {
+export async function getAllSets() {
     const params = {
-        page: page,
-        pageSize: pageSize,
-        orderBy: orderBy,
+        page: 1,
+        pageSize: 250,
+        orderBy: 'releaseDate',
     }
   const data = await fetchData("v2/sets", params);
   return data;

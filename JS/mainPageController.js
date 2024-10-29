@@ -2,12 +2,15 @@ import PokemonSetsMenu from "./CLASS/pokemonSetsMenu.js";
 import Nav from "./CLASS/nav.js";
 import { createHTMLElement } from "./codigo.js";
 import ShopMenu from "./CLASS/shopMenu.js";
+import CardsDataBase from "./CLASS/cardsDataBaseClass.js";
 
 // Declarar los distintos menus
 const parentId = "parent";
 const navBar = new Nav();
-const pokemonSetsMenu = new PokemonSetsMenu(parentId);
-const shopMenu = new ShopMenu(parentId);
+export const dataBase = new CardsDataBase();
+
+let pokemonSetsMenu;
+let shopMenu;
 
 function loadNavBar() {
   navBar.loadNavBar();
@@ -17,14 +20,18 @@ function loadMain() {
   document.body.appendChild(main);
 }
 function loadFooter() {}
-function initialice() {
+async function initialice() {
   document.body.innerHTML = "";
   // Añadir estructura base
   loadNavBar();
   loadMain();
   loadFooter();
+
+  await dataBase.loadDataBase();
+  pokemonSetsMenu = new PokemonSetsMenu(parentId);
+  shopMenu = new ShopMenu(parentId);
   //Cargar menu
-  loadSetsMenu();
+  loadShopMenu();
 }
 // Prueba cargar menus
 export function loadSetsMenu() {
@@ -37,4 +44,4 @@ export function loadShopMenu() {
 export function loadMyCollectionMenu() {}
 export function loadCombatsMenu() {}
 
-// initialice();
+initialice();
