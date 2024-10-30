@@ -5,13 +5,21 @@ import {
   capitalizeWords,
 } from "../codigo.js";
 import ShopProduct from "./shopProducts.js";
-import { allProducts, getProductsSets } from "../completeProductList.js";
+import {
+  allProducts,
+  getProductsSets,
+  addAllProducts,
+  getProductsByFilter,
+} from "../completeProductList.js";
 import { dataBase } from "../mainPageController.js";
 class ShopMenu extends Menu {
   constructor(parentId) {
+    addAllProducts();
     super(parentId);
     this.currentFilters = { productType: [], set: [] };
-    this.products = allProducts;
+    this.currentPage = 1;
+    this.currentPageSize = 9;
+    this.currentTotalPages = 0;
   }
   createMenu() {
     const menu = createHTMLElement("div", "shop-menu", ["menu"]);
@@ -29,12 +37,48 @@ class ShopMenu extends Menu {
   }
 
   createTopPanel() {
-    this.topPanelArtwork = createHTMLElement("div", "shop-top-panel");
+    this.topPanelArtwork = createHTMLElement("div", "shop-top-panel", [
+      "top-panel",
+    ]);
 
     const shopTitle = createHTMLElement("h1", "shop-title");
-    shopTitle.innerText = "Pokemon Card Shop";
+    shopTitle.innerText = "Pokémon Card Shop";
 
     this.topPanelArtwork.appendChild(shopTitle);
+    const cardExample1 = createImgElement(
+      "/ASSETS/images/card-1.png",
+      "example card1",
+      "example-card-1"
+    );
+    const cardExample2 = createImgElement(
+      "/ASSETS/images/card-2.png",
+      "example card2",
+      "example-card-2"
+    );
+    const cardExample3 = createImgElement(
+      "/ASSETS/images/card-3.png",
+      "example card3",
+      "example-card-3"
+    );
+
+    const cardExample4 = createImgElement(
+      "/ASSETS/images/shop-items/sv6/pack_3.png",
+      "example card4",
+      "example-card-4"
+    );
+    const cardExample5 = createImgElement(
+      "/ASSETS/images/shop-items/sv7/pack_4.png",
+      "example card5",
+      "example-card-5"
+    );
+
+    this.topPanelArtwork.append(
+      cardExample1,
+      cardExample2,
+      cardExample3,
+      cardExample4,
+      cardExample5,
+    );
     return this.topPanelArtwork;
   }
   createBottomPanel() {
@@ -56,15 +100,15 @@ class ShopMenu extends Menu {
     const bundle = this.createInputCheckbox("product", "bundle", "Bundle");
     const eliteTrainerBox = this.createInputCheckbox(
       "product",
-      "elite-trainer-box",
+      "elite_trainer_box",
       "Elite Trainer Box"
     );
     const specialCollectionBox = this.createInputCheckbox(
       "product",
-      "special-collection-box",
+      "special_collection_box",
       "Special Collection Box"
     );
-    const megaBox = this.createInputCheckbox("product", "mega-box", "Mega Box");
+    const megaBox = this.createInputCheckbox("product", "mega_box", "Mega Box");
 
     productFilter.append(
       productFilterTitle,
@@ -103,6 +147,8 @@ class ShopMenu extends Menu {
     newCheckbox.value = inputValue;
     newInput.append(newCheckbox, newLabel);
     newCheckbox.addEventListener("change", () => {
+      super.scrollToTop();
+      this.currentPage = 1;
       if (inputName == "product") {
         if (this.currentFilters.productType.includes(inputValue)) {
           this.currentFilters.productType =
@@ -126,8 +172,18 @@ class ShopMenu extends Menu {
     return newInput;
   }
   createProductsViewPanel() {
-    const productsViewPanel = createHTMLElement("div", "products-view-grid");
-    return productsViewPanel;
+    const productsPanel = createHTMLElement("div", "products-panel");
+    this.pageButtonsTop = this.createCollectionChangePagePanel();
+    this.pageButtonsBottom = this.createCollectionChangePagePanel();
+    this.productsGrid = createHTMLElement("div", "products-view-grid");
+
+    productsPanel.append(
+      this.pageButtonsTop,
+      this.productsGrid,
+      this.pageButtonsBottom
+    );
+
+    return productsPanel;
   }
   createProductBox(productData) {
     const productContainer = createHTMLElement("div", "", [
@@ -150,33 +206,86 @@ class ShopMenu extends Menu {
 
     return productContainer;
   }
-  async updateProductsViewPanel(newFilters = null) {
-    if (newFilters != null) {
-      this.currentFilters = newFilters;
-    }
+  async updateProductsViewPanel() {
     super.addLoadingModal("shop-bottom-panel");
-    this.productsViewPanel.innerHTML = "";
+    const filteredProducts = getProductsByFilter(
+      this.currentFilters.productType,
+      this.currentFilters.set,
+      this.currentPage,
+      this.currentPageSize
+    );
+    this.currentTotalPages = filteredProducts.totalPages;
     const imagesUrl = [];
-    for (const product of this.products) {
+    for (const product of filteredProducts.results) {
       imagesUrl.push(product.imageUrl);
     }
     await super.loadImagesBeforRendering(imagesUrl);
-    for (const product of this.products) {
-      if (this.isProductMeetFilters(product)) {
-        const newProduct = this.createProductBox(product);
-        this.productsViewPanel.appendChild(newProduct);
-      }
+    this.productsGrid.innerHTML = "";
+    for (const product of filteredProducts.results) {
+      const newProduct = this.createProductBox(product);
+      this.productsGrid.appendChild(newProduct);
     }
+    this.updateCollectionPageButtons(this.pageButtonsTop);
+    this.updateCollectionPageButtons(this.pageButtonsBottom);
     super.removeLoadingModal();
   }
-  isProductMeetFilters(productInfo) {
-    const setFilter =
-      this.currentFilters.set == "" ||
-      this.currentFilters.set.includes(productInfo.set);
-    const productFilter =
-      this.currentFilters.productType == "" ||
-      this.currentFilters.productType.includes(productInfo.productType);
-    return setFilter && productFilter;
+  createCollectionChangePagePanel() {
+    const changePagePanel = createHTMLElement("div", "change-page-buttons");
+    // Crear prev button
+    const prevButton = createHTMLElement("button", "prev-page-button");
+    prevButton.innerText = "Prev Page";
+    prevButton.addEventListener("click", () => {
+      if (this.currentPage > 1) {
+        --this.currentPage;
+        this.updateProductsViewPanel();
+      }
+    });
+    // Crear next button
+    const nextButton = createHTMLElement("button", "next-page-button");
+    nextButton.innerText = "Next Page";
+    nextButton.addEventListener("click", () => {
+      if (this.currentPage < this.currentTotalPages) {
+        ++this.currentPage;
+        this.updateProductsViewPanel();
+      }
+    });
+    // Crear pagina uno de ejemplo
+    const pageNumberButton = createHTMLElement("a", "", ["page-number-button"]);
+    pageNumberButton.innerText = 1;
+    changePagePanel.append(prevButton, pageNumberButton, nextButton);
+
+    return changePagePanel;
+  }
+  updateCollectionPageButtons(changePagePanel) {
+    const prevButton = changePagePanel.querySelector("#prev-page-button");
+    const nextButton = changePagePanel.querySelector("#next-page-button");
+    changePagePanel.innerHTML = "";
+    if (this.currentPage == 1) {
+      prevButton.classList.add("disabled-button");
+    } else {
+      prevButton.classList.remove("disabled-button");
+    }
+    changePagePanel.appendChild(prevButton);
+    for (let i = 0; i < this.currentTotalPages; i++) {
+      const pageNumberButton = createHTMLElement("a", "", [
+        "page-number-button",
+      ]);
+      pageNumberButton.innerText = i + 1;
+      pageNumberButton.id = i + 1 == this.currentPage ? "current-page" : "";
+      pageNumberButton.addEventListener("click", () => {
+        if (i + 1 != this.currentPage) {
+          this.currentPage = i + 1;
+          this.updateProductsViewPanel();
+        }
+      });
+      changePagePanel.appendChild(pageNumberButton);
+    }
+    if (this.currentPage == this.currentTotalPages) {
+      nextButton.classList.add("disabled-button");
+    } else {
+      nextButton.classList.remove("disabled-button");
+    }
+    changePagePanel.appendChild(nextButton);
   }
 }
 export default ShopMenu;

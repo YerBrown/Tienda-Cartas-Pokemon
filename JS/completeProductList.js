@@ -1,166 +1,34 @@
 import ShopProduct from "./CLASS/shopProducts.js";
-export const allProducts = [
-  new ShopProduct(
-    "sm11-pack1",
-    "Soon & Moon Unified Minds - Booster Pack 1",
-    "sm11",
-    "pack",
-    "./ASSETS/images/shop-Items/sm11/pack_1.png",
-    100
-  ),
-  new ShopProduct(
-    "sm11-pack2",
-    "Soon & Moon Unified Minds - Booster Pack 2",
-    "sm11",
-    "pack",
-    "./ASSETS/images/shop-Items/sm11/pack_2.png",
-    100
-  ),
-  new ShopProduct(
-    "sm11-pack3",
-    "Soon & Moon Unified Minds - Booster Pack 3",
-    "sm11",
-    "pack",
-    "./ASSETS/images/shop-Items/sm11/pack_3.png",
-    100
-  ),
-  new ShopProduct(
-    "sm11-pack4",
-    "Soon & Moon Unified Minds - Booster Pack 4",
-    "sm11",
-    "pack",
-    "./ASSETS/images/shop-Items/sm11/pack_4.png",
-    100
-  ),
-  new ShopProduct(
-    "sv3pt5-pack1",
-    "Scarlet & Violet 151 - Booster Pack",
-    "sv3pt5",
-    "pack",
-    "./ASSETS/images/shop-Items/sv3pt5/pack_1.png",
-    100
-  ),
-  new ShopProduct(
-    "sv3pt5-bundle",
-    "Scarlet & Violet 151 - Booster Bundle",
-    "sv3pt5",
-    "bundle",
-    "./ASSETS/images/shop-Items/sv3pt5/bundle.png",
-    500
-  ),
-  new ShopProduct(
-    "sv3pt5-elite-trailer-box",
-    "Scarlet & Violet 151 - Elite Trainer Box",
-    "sv3pt5",
-    "elite-trainer-box",
-    "./ASSETS/images/shop-Items/sv3pt5/elite_trainer_box_1.png",
-    300
-  ),
-  new ShopProduct(
-    "sv3pt5-special-collection-box",
-    "Scarlet & Violet 151 - Special Collection Box",
-    "sv3pt5",
-    "special-collection-box",
-    "./ASSETS/images/shop-Items/sv3pt5/special_collection_box.png",
-    1000
-  ),
-  new ShopProduct(
-    "sv4-pack1",
-    "Scarlet & Violet Paradox Rift - Booster Pack 1",
-    "sv4",
-    "pack",
-    "./ASSETS/images/shop-Items/sv4/pack_1.png",
-    100
-  ),
-  new ShopProduct(
-    "sv4-pack2",
-    "Scarlet & Violet Paradox Rift - Booster Pack 2",
-    "sv4",
-    "pack",
-    "./ASSETS/images/shop-Items/sv4/pack_3.png",
-    100
-  ),
-  new ShopProduct(
-    "sv4-pack3",
-    "Scarlet & Violet Paradox Rift - Booster Pack 3",
-    "sv4",
-    "pack",
-    "./ASSETS/images/shop-Items/sv4/pack_3.png",
-    100
-  ),
-  new ShopProduct(
-    "sv4-pack4",
-    "Scarlet & Violet Paradox Rift - Booster Pack 4",
-    "sv4",
-    "pack",
-    "./ASSETS/images/shop-Items/sv4/pack_4.png",
-    100
-  ),
-  new ShopProduct(
-    "sv4-elite-trainer-box1",
-    "Scarlet & Violet Paradox Rift - Elite Trainer Box 1",
-    "sv4",
-    "elite-trainer-box",
-    "./ASSETS/images/shop-Items/sv4/elite_trainer_box_1.png",
-    300
-  ),
-  new ShopProduct(
-    "sv4-elite-trainer-box2",
-    "Scarlet & Violet Paradox Rift - Elite Trainer Box 2",
-    "sv4",
-    "elite-trainer-box",
-    "./ASSETS/images/shop-Items/sv4/elite_trainer_box_2.png",
-    300
-  ),
-  new ShopProduct(
-    "sv5-pack1",
-    "Scarlet & Violet Temporal Forces - Booster Pack 1",
-    "sv5",
-    "pack",
-    "./ASSETS/images/shop-Items/sv5/pack_1.png",
-    100
-  ),
-  new ShopProduct(
-    "sv5-pack2",
-    "Scarlet & Violet Temporal Forces - Booster Pack 2",
-    "sv5",
-    "pack",
-    "./ASSETS/images/shop-Items/sv5/pack_2.png",
-    100
-  ),
-  new ShopProduct(
-    "sv5-pack3",
-    "Scarlet & Violet Temporal Forces - Booster Pack 3",
-    "sv5",
-    "pack",
-    "./ASSETS/images/shop-Items/sv5/pack_3.png",
-    100
-  ),
-  new ShopProduct(
-    "sv5-pack4",
-    "Scarlet & Violet Temporal Forces - Booster Pack 4",
-    "sv5",
-    "pack",
-    "./ASSETS/images/shop-Items/sv5/pack_4.png",
-    100
-  ),
-  new ShopProduct(
-    "sv5-elite-trainer-box1",
-    "Scarlet & Violet Temporal Forces - Elite Trainer Box 1",
-    "sv5",
-    "elite-trainer-box",
-    "./ASSETS/images/shop-Items/sv5/elite_trainer_box_1.png",
-    300
-  ),
-  new ShopProduct(
-    "sv5-elite-trainer-box2",
-    "Scarlet & Violet Temporal Forces - Elite Trainer Box 2",
-    "sv5",
-    "elite-trainer-box",
-    "./ASSETS/images/shop-Items/sv5/elite_trainer_box_2.png",
-    300
-  ),
+import { dataBase } from "./mainPageController.js";
+export let allProducts = [];
+export const productTypes = [
+  {
+    id: "pack",
+    name: "Booster Pack",
+    price: 100,
+  },
+  {
+    id: "bundle",
+    name: "Booster Bundle",
+    price: 500,
+  },
+  {
+    id: "elite_trainer_box",
+    name: "Elite Trainer Box",
+    price: 750,
+  },
+  {
+    id: "special_collection_box",
+    name: "Special Collection Box",
+    price: 1000,
+  },
+  {
+    id: "mega_box",
+    name: "Mega Box",
+    price: 5000,
+  },
 ];
+const shopProductsImagesBasePath = "ASSETS/images/shop-items";
 export function getProductsSets() {
   const setsInProducts = [];
   for (const product of allProducts) {
@@ -171,4 +39,103 @@ export function getProductsSets() {
   }
 
   return setsInProducts;
+}
+export function addAllProducts() {
+  allProducts = [];
+  addProductsBySet("png", "sm11", 4, 0, 0, 0, 0);
+  addProductsBySet("png", "sv3pt5", 1, 1, 1, 1, 0);
+  addProductsBySet("png", "sv4", 4, 0, 2, 0, 0);
+  addProductsBySet("png", "sv5", 4, 0, 2, 0, 0);
+  addProductsBySet("png", "sv6", 4, 0, 1, 0, 0);
+  addProductsBySet("png", "sv7", 4, 0, 1, 0, 0);
+  addProductsBySet("png", "swsh5", 4, 0, 2, 0, 0);
+  addProductsBySet("png", "swsh7", 4, 1, 0, 0, 0);
+  addProductsBySet("png", "swsh8", 4, 1, 0, 0, 0);
+  addProductsBySet("jpg", "xy7", 4, 0, 0, 0, 1);
+}
+function addProductsBySet(
+  fileType,
+  setId,
+  packAmount,
+  bundleAmount,
+  eliteTrainerBoxAmount,
+  specialCollectionBoxAmount,
+  megaBoxAmount
+) {
+  for (let i = 0; i < packAmount; i++) {
+    allProducts.push(
+      createProductByType(setId, productTypes[0].id, i + 1, fileType)
+    );
+  }
+  for (let i = 0; i < bundleAmount; i++) {
+    allProducts.push(
+      createProductByType(setId, productTypes[1].id, i + 1, fileType)
+    );
+  }
+  for (let i = 0; i < eliteTrainerBoxAmount; i++) {
+    allProducts.push(
+      createProductByType(setId, productTypes[2].id, i + 1, fileType)
+    );
+  }
+  for (let i = 0; i < specialCollectionBoxAmount; i++) {
+    allProducts.push(
+      createProductByType(setId, productTypes[3].id, i + 1, fileType)
+    );
+  }
+  for (let i = 0; i < megaBoxAmount; i++) {
+    allProducts.push(
+      createProductByType(setId, productTypes[4].id, i + 1, fileType)
+    );
+  }
+}
+function createProductByType(set, productType, number, filetype) {
+  const productId = `${set}-${productType + number}`;
+  const setName = productTypes.find(
+    (product) => product.id == productType
+  ).name;
+  const setData = dataBase.getSetById(set);
+  const productName = setData.name + " - " + setName + " " + number;
+  const imageUrl = `${shopProductsImagesBasePath}/${set}/${productType}_${number}.${filetype}`;
+  const price = productTypes.find((product) => product.id == productType).price;
+  return new ShopProduct(
+    productId,
+    productName,
+    set,
+    productType,
+    imageUrl,
+    price
+  );
+}
+export function getProductsByFilter(productFilter, setFilter, page, pageSize) {
+  const productsMeetFilter = [];
+  const resultObject = {
+    results: [],
+    page: page,
+    pageSize: pageSize,
+    totalPages: 0,
+  };
+  for (const product of allProducts) {
+    if (isProductMeetFilters(product, productFilter, setFilter)) {
+      productsMeetFilter.push(product);
+    }
+  }
+
+  const totalPages = Math.ceil(productsMeetFilter.length / pageSize);
+  if (page > totalPages || page < 0) {
+    return resultObject;
+  }
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
+  const paginatedElements = productsMeetFilter.slice(start, end);
+
+  resultObject.results = paginatedElements;
+  resultObject.totalPages = totalPages;
+  return resultObject;
+}
+function isProductMeetFilters(productInfo, productFilter, setFilter) {
+  const productFilterResult =
+    productFilter == "" || productFilter.includes(productInfo.productType);
+  const setFilterResult =
+    setFilter == "" || setFilter.includes(productInfo.set);
+  return productFilterResult && setFilterResult;
 }

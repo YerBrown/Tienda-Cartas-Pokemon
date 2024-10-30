@@ -15,6 +15,9 @@
   align-items: center;
 }
 
+#set-top-panel{
+  background-image: url('/ASSETS/images/sAToN55.jpeg');
+}
 #sets-grid {
   display: grid;
   box-sizing: border-box;
@@ -170,35 +173,11 @@
   font-weight: bold;
 }
 
-#collection #change-page-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  background-color: rgb(72, 72, 72);
-  border-radius: 10px;
-}
 
 #change-page-buttons button {
   padding: 10px;
 }
 
-#collection #change-page-buttons a {
-  text-decoration: none;
-  color: black;
-  cursor: pointer;
-  color: white;
-}
-
-#collection #change-page-buttons a:hover {
-  color: rgb(55, 55, 55);
-}
-
-#collection #change-page-buttons #current-page {
-  font-weight: bold;
-  text-decoration: underline;
-}
 
 #card-modal-parent {
   position: fixed;
@@ -232,7 +211,7 @@
 
 #go-back-button {
   position: fixed;
-  top: 60px;
+  top: 10vh;
   left: 15px;
   padding: 10px;
   z-index: 10;

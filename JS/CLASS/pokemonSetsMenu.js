@@ -2,7 +2,7 @@ import Menu from "./menu.js";
 import { createHTMLElement, createImgElement } from "../codigo.js";
 import CardList from "./cardList.js";
 import { getSetById, getCardsBySet } from "../apiCallController.js";
-
+import { allProducts, getProductsSets } from "../completeProductList.js";
 class PokemonSetsMenu extends Menu {
   constructor(parentId) {
     super(parentId);
@@ -33,8 +33,7 @@ class PokemonSetsMenu extends Menu {
   createSetSelectorSubmenu() {
     this.selectSet = createHTMLElement("div", "select-set-submenu");
 
-    const selectSetTitle = createHTMLElement("h3", "", "");
-    selectSetTitle.innerText = "Pokémon Sets";
+    const selectSetTitle = this.createTopPanel();
 
     this.selectSetGrid = createHTMLElement("div", "sets-grid");
     this.selectSet.append(selectSetTitle, this.selectSetGrid);
@@ -87,6 +86,15 @@ class PokemonSetsMenu extends Menu {
 
     setInfoContainer.append(this.setInfoLogo, rightInfoContainer);
     return setInfoContainer;
+  }
+  createTopPanel() {
+    const topPanel = createHTMLElement("div", "set-top-panel",  ['top-panel']);
+
+    const shopTitle = createHTMLElement("h1", "set-menu-title");
+    shopTitle.innerText = "Pokémon Sets Collection";
+
+    topPanel.appendChild(shopTitle);
+    return topPanel;
   }
   createSetCollectionPanel() {
     // Coleccion de cartas del set
@@ -198,7 +206,7 @@ class PokemonSetsMenu extends Menu {
       super.scrollToTop();
     });
     this.setInfo.appendChild(this.backButton);
-  } 
+  }
   async openSetSelectionPanel() {
     this.mainNode.innerHTML = "";
     this.mainNode.appendChild(this.selectSet);
@@ -209,17 +217,7 @@ class PokemonSetsMenu extends Menu {
     }
   }
   async loadAllSet() {
-    const setsId = [
-      "sm11",
-      "swsh5",
-      "swsh7",
-      "swsh8",
-      "sv3pt5",
-      "sv4",
-      "sv5",
-      "sv6",
-      "sv7",
-    ];
+    const setsId = getProductsSets();
     const promesas = setsId.map((id) => getSetById(id));
     this.allSetsData = [];
     const resultados = await Promise.all(promesas);
@@ -227,6 +225,13 @@ class PokemonSetsMenu extends Menu {
       this.allSetsData.push(setData.data[0]);
     }
     console.log(this.allSetsData);
+    // Cargar las imagenes antes de cargar
+    const imagesUrl = [];
+    for (const set of this.allSetsData) {
+      imagesUrl.push(set.images.logo);
+    }
+    await super.loadImagesBeforRendering(imagesUrl);
+
     this.addAllSetsLogos(this.allSetsData);
   }
   addAllSetsLogos(allSets) {
@@ -376,6 +381,5 @@ class PokemonSetsMenu extends Menu {
   closeCardModal() {
     this.cardModal.parentNode.removeChild(this.cardModal);
   }
-  
 }
 export default PokemonSetsMenu;
