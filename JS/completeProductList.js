@@ -52,6 +52,7 @@ export function addAllProducts() {
   addProductsBySet("png", "swsh7", 4, 1, 0, 0, 0);
   addProductsBySet("png", "swsh8", 4, 1, 0, 0, 0);
   addProductsBySet("jpg", "xy7", 4, 0, 0, 0, 1);
+  console.log(allProducts);
 }
 function addProductsBySet(
   fileType,
@@ -138,4 +139,8 @@ function isProductMeetFilters(productInfo, productFilter, setFilter) {
   const setFilterResult =
     setFilter == "" || setFilter.includes(productInfo.set);
   return productFilterResult && setFilterResult;
+}
+export function getProductById(id) {
+  const obtainedProduct = allProducts.find((product) => product.id == id);
+  return obtainedProduct;
 }

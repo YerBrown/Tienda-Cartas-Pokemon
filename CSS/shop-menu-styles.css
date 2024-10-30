@@ -4,7 +4,6 @@
   width: 100%;
   min-height: 100vh;
   background-image: url("../ASSETS/images/a1TKOxQ.jpeg");
-  background-repeat: repeat();
   background-size: 60vw 60vw;
 }
 #shop-top-panel h1 {
@@ -43,7 +42,6 @@
   z-index: 1;
 }
 
-
 #shop-bottom-panel {
   position: relative;
   display: flex;
@@ -57,11 +55,10 @@
   flex-direction: column;
   border-radius: 2vw;
   justify-content: right;
-  width: 30vw;
+  width: 15vw;
   padding-left: 5vw;
   padding-top: 1vw;
   font-size: 1vw;
-
 }
 
 .filter-input-container {
@@ -73,7 +70,7 @@
   box-sizing: border-box;
 }
 
-.filter-input-container input{
+.filter-input-container input {
   width: 1vw;
 }
 
@@ -82,7 +79,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: start;
 }
 
 #products-panel {
@@ -91,7 +88,7 @@
   justify-content: start;
   align-items: center;
   padding: 1vw;
-  width: 70vw;
+  width: 85vw;
 }
 
 #products-panel #change-page-buttons {
@@ -105,7 +102,7 @@
 #products-view-grid {
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 25vw);
   grid-auto-rows: 20vw;
   gap: 2vw;
   border-radius: 1vw;
@@ -136,7 +133,7 @@
   font-weight: bold;
 }
 
-.product-box>img {
+.product-box > img {
   width: 90%;
   height: 75%;
   object-fit: contain;
@@ -150,4 +147,89 @@
 
 .price-container img {
   width: 1.1vw;
+}
+/* Open packs submenu */
+#open-packs-submenu {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+#my-packs-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.892);
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+}
+#my-packs-title {
+  font-family: var(--font-title-1);
+  font-size: 4vw;
+}
+#my-packs-grid {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 30vw;
+  gap: 2vw;
+  border-radius: 1vw;
+  padding: 1vw;
+  width: 100%;
+  box-sizing: border-box;
+}
+.pack {
+  display: flex;
+  position: relative;
+  justify-self: center;
+  height: 100%;
+  justify-content: center;
+}
+.pack img {
+  width: 100%;
+}
+.pack p {
+  position: absolute;
+  bottom: 1vw;
+  width: 3vw;
+  height: 3vw;
+  background-color: white;
+  font-size: 1vw;
+  border-radius: 3vw;
+  text-align: center;
+  padding: 1vw;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+#open-pack-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  gap: 3vw;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10vw;
+  box-sizing: border-box;
+}
+#open-pack-modal img {
+  height: 60%;
+  object-fit: contain;
+}
+#open-pack-modal #close-open-pack-modal-button {
+  width: auto;
+  padding: 2vw;
+  position: absolute;
+  top: 5vw;
+  left: 5vw;
+}
+#open-pack-modal button {
+  width: 30%;
+  padding: 2vw;
 }

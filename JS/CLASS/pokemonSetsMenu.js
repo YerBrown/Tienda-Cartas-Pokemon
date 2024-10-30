@@ -3,6 +3,7 @@ import { createHTMLElement, createImgElement } from "../codigo.js";
 import CardList from "./cardList.js";
 import { getSetById, getCardsBySet } from "../apiCallController.js";
 import { allProducts, getProductsSets } from "../completeProductList.js";
+import { userDataBase } from "../mainPageController.js";
 class PokemonSetsMenu extends Menu {
   constructor(parentId) {
     super(parentId);
@@ -356,8 +357,7 @@ class PokemonSetsMenu extends Menu {
       return newCard;
     }
 
-    const randomNumber = Math.floor(Math.random() * 101);
-    if (randomNumber < 70) {
+    if (userDataBase.isCardInCollection(cardInfo.id)) {
       cardImg.src = cardInfo.images.large;
       newCard.addEventListener("click", () => {
         this.openCardModal(cardInfo.id);

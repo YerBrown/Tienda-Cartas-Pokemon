@@ -231,9 +231,9 @@ select {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 10px;
-  background-color: rgb(72, 72, 72);
+  gap: 1vw;
+  padding: 1vw;
+  background-color: rgb(150, 150, 150);
   border-radius: 10px;
 }
 
@@ -242,8 +242,12 @@ select {
   color: black;
   cursor: pointer;
   color: white;
+  font-size: 1.2vw;
 }
-
+#change-page-buttons button {
+  font-size: 1.2vw;
+  padding: 1vw;
+}
 #change-page-buttons a:hover {
   color: rgb(55, 55, 55);
 }

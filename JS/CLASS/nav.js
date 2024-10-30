@@ -78,5 +78,8 @@ class Nav {
     }
     document.body.appendChild(this.header);
   }
+  updateCoinsText(newCoinsAmount){
+    this.coinsText.innerText = newCoinsAmount
+  }
 }
 export default Nav;

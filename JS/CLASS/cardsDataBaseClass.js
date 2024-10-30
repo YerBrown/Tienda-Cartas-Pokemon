@@ -4,6 +4,7 @@ import {
   getSuperTypes,
   getRarities,
   getAllSets,
+  getCardsBySet,
 } from "../apiCallController.js";
 import Set from "./setData.js";
 class CardsDataBase {
@@ -38,7 +39,30 @@ class CardsDataBase {
   }
   async saveSets() {
     const setResponse = await getAllSets();
-    this.sets = setResponse.data;
+    const setWithCollectionKey = setResponse.data;
+    for (const set of setWithCollectionKey) {
+      set.collection = []
+    }
+    this.sets = setWithCollectionKey;
+  }
+  async getCardsOfSetById(setId) {
+    const currentSet = this.sets.find((set) => set.id == setId);
+    console.log(currentSet);
+    if (currentSet.collection.length <= 0) {
+      await this.addCardsList(setId);
+    }
+    console.log(currentSet)
+    return currentSet.collection;
+  }
+  getRandomCardOfSet(setId){
+    const set = this.getSetById(setId);
+    const randomNumber = Math.floor(Math.random() * set.collection.length);
+    return set.collection[randomNumber];
+  }
+  async addCardsList(setId) {
+    const currentSet = this.sets.find((set) => set.id == setId);
+    const collection = await getCardsBySet(setId);
+    currentSet.collection = collection.data;
   }
   getSetById(id) {
     if (this.sets.length > 0) {

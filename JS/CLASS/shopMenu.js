@@ -1,17 +1,12 @@
 import Menu from "./menu.js";
+import { createHTMLElement, createImgElement } from "../codigo.js";
 import {
-  createHTMLElement,
-  createImgElement,
-  capitalizeWords,
-} from "../codigo.js";
-import ShopProduct from "./shopProducts.js";
-import {
-  allProducts,
   getProductsSets,
   addAllProducts,
   getProductsByFilter,
+  getProductById,
 } from "../completeProductList.js";
-import { dataBase } from "../mainPageController.js";
+import { dataBase, userDataBase } from "../mainPageController.js";
 class ShopMenu extends Menu {
   constructor(parentId) {
     addAllProducts();
@@ -24,18 +19,35 @@ class ShopMenu extends Menu {
   createMenu() {
     const menu = createHTMLElement("div", "shop-menu", ["menu"]);
     super.createLoadingModal();
-    const topPanel = this.createTopPanel();
-    const bottomPanel = this.createBottomPanel();
 
-    menu.append(topPanel, bottomPanel);
+    this.createBuyProductsSubMenu();
+    this.createOpenPacksSubmenu();
 
     return menu;
   }
   loadMenu() {
     super.loadMenu();
+    this.openOpenPacksSubmenu();
+  }
+  openBuyProductsSubmenu() {
+    this.mainNode.innerHTML = "";
+    this.mainNode.appendChild(this.buyProductsSubmenu);
     this.updateProductsViewPanel();
   }
-
+  openOpenPacksSubmenu() {
+    this.mainNode.innerHTML = "";
+    this.mainNode.appendChild(this.openPacksSubmenu);
+    this.openPacksSubmenu.innerHTML = "";
+    this.openPacksSubmenu.appendChild(this.myPacksPanel);
+    this.updateMyPackPanel();
+  }
+  //Comprar productos submenu
+  createBuyProductsSubMenu() {
+    this.buyProductsSubmenu = createHTMLElement("div", "buy-products-submenu");
+    const topPanel = this.createTopPanel();
+    const bottomPanel = this.createBottomPanel();
+    this.buyProductsSubmenu.append(topPanel, bottomPanel);
+  }
   createTopPanel() {
     this.topPanelArtwork = createHTMLElement("div", "shop-top-panel", [
       "top-panel",
@@ -77,7 +89,7 @@ class ShopMenu extends Menu {
       cardExample2,
       cardExample3,
       cardExample4,
-      cardExample5,
+      cardExample5
     );
     return this.topPanelArtwork;
   }
@@ -286,6 +298,90 @@ class ShopMenu extends Menu {
       nextButton.classList.remove("disabled-button");
     }
     changePagePanel.appendChild(nextButton);
+  }
+
+  // Abrir sobres submenu
+  createOpenPacksSubmenu() {
+    this.openPacksSubmenu = createHTMLElement("div", "open-packs-submenu");
+    this.myPacksPanel = this.createMyPacksPanel();
+    this.openPackModal = this.createOpenPackModal();
+  }
+  createMyPacksPanel() {
+    const myPacksPanel = createHTMLElement("div", "my-packs-panel");
+
+    const submenuTitle = createHTMLElement("h2", "my-packs-title");
+    submenuTitle.innerText = "My Pokémon Packs";
+    this.myPacksGrid = createHTMLElement("div", "my-packs-grid");
+    myPacksPanel.append(submenuTitle, this.myPacksGrid);
+    return myPacksPanel;
+  }
+  updateMyPackPanel() {
+    super.addLoadingModal("my-packs-panel");
+    this.myPacksGrid.innerHTML = "";
+    const myPacks = userDataBase.packs;
+    for (const pack of myPacks) {
+      const newPack = this.createPack(pack);
+      this.myPacksGrid.appendChild(newPack);
+    }
+    super.removeLoadingModal();
+  }
+  createPack(pack) {
+    const product = getProductById(pack.packid);
+    const currentPack = createHTMLElement("div", "", ["pack", "selectable"]);
+    const currentImg = createImgElement(
+      product.imageUrl,
+      "pack " + product.name
+    );
+    const amountText = createHTMLElement("p");
+    amountText.innerText = pack.amount;
+    currentPack.append(currentImg, amountText);
+    currentPack.addEventListener("click", () => {
+      this.openOpenPackModal(pack);
+    });
+    return currentPack;
+  }
+  createOpenPackModal() {
+    const modalParent = createHTMLElement("div", "open-pack-modal");
+    this.modalPackImg = createImgElement(
+      "/ASSETS/images/pokemon-card-back.webp"
+    );
+    const openButton = createHTMLElement("button", "open-pack-button");
+    openButton.addEventListener("click", () => {
+      // TODO: Open pack logic, convertirlo en una funcion
+      const obtainedCards = [];
+      for (let i = 0; i < 5; i++) {
+        const newCard = dataBase.getRandomCardOfSet(this.currentPack.set);
+        obtainedCards.push(newCard);
+      }
+      console.log(obtainedCards);
+      userDataBase.addCardsToCollection(obtainedCards);
+      userDataBase.removePacks(this.currentPack.packid, 1);
+      this.closeOpenPackModal();
+      this.updateMyPackPanel();
+    });
+    openButton.innerText = "Open Pack";
+    const closeButton = createHTMLElement(
+      "button",
+      "close-open-pack-modal-button"
+    );
+    closeButton.innerText = "Close";
+    closeButton.addEventListener("click", () => {
+      this.closeOpenPackModal();
+    });
+    modalParent.append(this.modalPackImg, openButton, closeButton);
+    return modalParent;
+  }
+  async openOpenPackModal(pack) {
+    this.currentPack = pack;
+    const modalParent = document.getElementById("shop-menu");
+    modalParent.appendChild(this.openPackModal);
+    super.addLoadingModal("open-pack-modal");
+    this.modalPackImg.src = getProductById(this.currentPack.packid).imageUrl;
+    await dataBase.getCardsOfSetById(this.currentPack.set);
+    super.removeLoadingModal();
+  }
+  closeOpenPackModal() {
+    this.openPackModal.parentNode.removeChild(this.openPackModal);
   }
 }
 export default ShopMenu;
