@@ -32,19 +32,6 @@ async function initialice() {
   await dataBase.loadDataBase();
   pokemonSetsMenu = new PokemonSetsMenu(parentId);
   shopMenu = new ShopMenu(parentId);
-  // Test my packs
-  userDataBase.addPacks("sm11-pack1", "sm11", 1);
-  userDataBase.addPacks("sm11-pack2", "sm11", 1);
-  userDataBase.addPacks("sm11-pack3", "sm11", 1);
-  userDataBase.addPacks("swsh7-pack1", "swsh7", 1);
-  userDataBase.addPacks("swsh7-pack2", "swsh7", 1);
-  userDataBase.addPacks("swsh5-pack1", "swsh5", 1);
-  userDataBase.addPacks("swsh5-pack2", "swsh5", 1);
-  userDataBase.addPacks("sv5-pack1", "sv5", 1);
-  userDataBase.addPacks("sv5-pack2", "sv5", 1);
-  userDataBase.addPacks("sv6-pack1", "sv6", 1);
-  userDataBase.addPacks("sv6-pack2", "sv6", 1);
-  userDataBase.addPacks("sv3pt5-pack1", "sv3pt5", 1);
   //Cargar menu
   loadShopMenu();
 }

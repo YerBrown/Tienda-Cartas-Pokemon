@@ -1,5 +1,5 @@
 import Menu from "./menu.js";
-import { createHTMLElement, createImgElement } from "../codigo.js";
+import { createHTMLElement, createImgElement, loadImagesBeforRendering } from "../codigo.js";
 import CardList from "./cardList.js";
 import { getSetById, getCardsBySet } from "../apiCallController.js";
 import { allProducts, getProductsSets } from "../completeProductList.js";
@@ -231,7 +231,7 @@ class PokemonSetsMenu extends Menu {
     for (const set of this.allSetsData) {
       imagesUrl.push(set.images.logo);
     }
-    await super.loadImagesBeforRendering(imagesUrl);
+    await loadImagesBeforRendering(imagesUrl);
 
     this.addAllSetsLogos(this.allSetsData);
   }
@@ -302,7 +302,7 @@ class PokemonSetsMenu extends Menu {
       for (const card of this.currentCardList.allCards) {
         imagesUrl.push(card.images.large);
       }
-      await super.loadImagesBeforRendering(imagesUrl);
+      await loadImagesBeforRendering(imagesUrl);
       this.collectionGrid.innerHTML = "";
       for (const card of this.currentCardList.allCards) {
         this.collectionGrid.appendChild(this.createCollectionCard(card));

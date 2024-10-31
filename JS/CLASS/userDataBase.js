@@ -2,19 +2,21 @@ import { navBar } from "../mainPageController.js";
 class UserDataBase {
   constructor() {
     this.coins = 0;
-    this.updateCoins(1000);
+    this.lastSaveDate = new Date();
     this.collection = [];
     this.packs = [];
+    this.winCoinsCooldown = 1000 * 10;
+    this.winAmount = 100;
     this.updateUserData();
+    this.checkTimeBetweenSaves();
   }
   updateUserData() {
     const localStorageData = this.getLocalStorageData();
-    console.log(localStorageData);
     if (localStorageData) {
       this.coins = localStorageData.coins;
+      this.lastSaveDate = localStorageData.lastSaveDate;
       this.collection = localStorageData.collection;
       this.packs = localStorageData.packs;
-      this.updateCoins(this.coins);
     }
   }
   getLocalStorageData() {
@@ -22,11 +24,24 @@ class UserDataBase {
     return JSON.parse(userString);
   }
   saveLocalStorageData() {
+    this.lastSaveDate = new Date();
     localStorage.setItem("userData", JSON.stringify(this));
+  }
+  checkTimeBetweenSaves() {
+    const currentDate = new Date();
+    const differenceInMilliseconds = currentDate - new Date(this.lastSaveDate);
+    console.log(currentDate, new Date(this.lastSaveDate));
+    const addCoinsRemaining = Math.floor(
+      differenceInMilliseconds / this.winCoinsCooldown
+    );
+    console.log(addCoinsRemaining);
+    this.addCoins(this.coins + addCoinsRemaining * this.winAmount);
+    setTimeout(() => {
+      this.winCoins();
+    }, this.winCoinsCooldown);
   }
   addCardsToCollection(cards) {
     for (const card of cards) {
-      console.log(card);
       const newCard = { card: card, amount: 1 };
       const currentCard = this.getCardById(card);
       if (currentCard) {
@@ -38,7 +53,6 @@ class UserDataBase {
       } else {
         this.collection.push(newCard);
       }
-      console.log(card);
     }
     this.saveLocalStorageData();
   }
@@ -68,7 +82,6 @@ class UserDataBase {
   addPacks(pack, set, amount) {
     const newPack = { packid: pack, set: set, amount: amount };
     const currentPack = this.getPackById(pack);
-    console.log(currentPack);
     if (currentPack) {
       currentPack.amount += amount;
     } else {
@@ -99,16 +112,29 @@ class UserDataBase {
   isPosibleToBuy(price) {
     return price >= this.coins;
   }
+  removeCoins(amountRemoved) {
+    this.updateCoins(this.coins - amountRemoved);
+  }
+  addCoins(amountAdded) {
+    this.updateCoins(this.coins + amountAdded);
+  }
   updateCoins(newCoinsValue) {
     this.coins = newCoinsValue;
     if (this.coins < 0) {
       this.coins = 0;
     }
     navBar.updateCoinsText(this.coins);
+    this.saveLocalStorageData();
   }
   isCardInCollection(cardId) {
-      const findedCard = this.collection.find((card) => card.card.id == cardId);
+    const findedCard = this.collection.find((card) => card.card.id == cardId);
     return findedCard ? true : false;
+  }
+  winCoins() {
+    this.addCoins(this.winAmount);
+    setTimeout(() => {
+      this.winCoins();
+    }, this.winCoinsCooldown);
   }
 }
 export default UserDataBase;

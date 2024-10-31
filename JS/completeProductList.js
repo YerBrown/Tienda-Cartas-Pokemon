@@ -15,12 +15,12 @@ export const productTypes = [
   {
     id: "elite_trainer_box",
     name: "Elite Trainer Box",
-    price: 750,
+    price: 1000,
   },
   {
     id: "special_collection_box",
     name: "Special Collection Box",
-    price: 1000,
+    price: 2000,
   },
   {
     id: "mega_box",
@@ -52,7 +52,6 @@ export function addAllProducts() {
   addProductsBySet("png", "swsh7", 4, 1, 0, 0, 0);
   addProductsBySet("png", "swsh8", 4, 1, 0, 0, 0);
   addProductsBySet("jpg", "xy7", 4, 0, 0, 0, 1);
-  console.log(allProducts);
 }
 function addProductsBySet(
   fileType,

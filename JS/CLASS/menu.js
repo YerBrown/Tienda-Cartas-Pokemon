@@ -1,4 +1,4 @@
-import { createHTMLElement, createImgElement } from "../codigo.js";
+import { createHTMLElement, createImgElement, loadImagesBeforRendering } from "../codigo.js";
 class Menu {
   constructor(parentId) {
     this.parentId = parentId;
@@ -30,17 +30,6 @@ class Menu {
   }
   removeLoadingModal() {
     this.loadingModal.parentNode.removeChild(this.loadingModal);
-  }
-  async loadImagesBeforRendering(urls) {
-    const images = urls.map((url) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = url;
-        img.onload = () => resolve(img);
-      });
-    });
-
-    const loadedImages = await Promise.all(images);
   }
   scrollToTop() {
     window.scrollTo({

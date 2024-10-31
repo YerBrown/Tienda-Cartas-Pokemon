@@ -181,6 +181,7 @@ button {
   transition: outline .2s linear;
   outline: 2px solid black;
   font-family: var(--font-general);
+  padding: 1vw;
 }
 
 button:hover {

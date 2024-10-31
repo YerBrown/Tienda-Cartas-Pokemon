@@ -1,5 +1,9 @@
 import Menu from "./menu.js";
-import { createHTMLElement, createImgElement } from "../codigo.js";
+import {
+  createHTMLElement,
+  createImgElement,
+  loadImagesBeforRendering,
+} from "../codigo.js";
 import {
   getProductsSets,
   addAllProducts,
@@ -7,7 +11,7 @@ import {
   getProductById,
 } from "../completeProductList.js";
 import { dataBase, userDataBase } from "../mainPageController.js";
-import OpenPacksModal from './openPacksModal.js';
+import OpenPacksModal from "./openPacksModal.js";
 class ShopMenu extends Menu {
   constructor(parentId) {
     addAllProducts();
@@ -217,15 +221,27 @@ class ShopMenu extends Menu {
       "product " + productData.name
     );
     const productName = createHTMLElement("p");
+    productName.classList.add("product-name");
     productName.innerText = productData.name;
     const priceParent = createHTMLElement("div", "", ["price-container"]);
     const productPrice = createHTMLElement("p");
+
     productPrice.innerText = productData.price;
     const coinImg = createImgElement("ASSETS/images/moneda-de-dolar.png");
-    priceParent.append(productPrice, coinImg);
+    const buyButton = createHTMLElement("button", "", ["buy-button"]);
+
+    buyButton.innerText = "Buy";
+    buyButton.addEventListener("click", () => {
+      this.buyPorduct(productData);
+    });
+    priceParent.append(productPrice, coinImg, buyButton);
 
     productContainer.append(productImg, productName, priceParent);
-
+    // Si el valor es mayor al dinero
+    if (productData.price > userDataBase.coins) {
+      productPrice.classList.add("overpriced");
+      buyButton.classList.add("overpriced");
+    }
     return productContainer;
   }
   async updateProductsViewPanel() {
@@ -241,7 +257,7 @@ class ShopMenu extends Menu {
     for (const product of filteredProducts.results) {
       imagesUrl.push(product.imageUrl);
     }
-    await super.loadImagesBeforRendering(imagesUrl);
+    await loadImagesBeforRendering(imagesUrl);
     this.productsGrid.innerHTML = "";
     for (const product of filteredProducts.results) {
       const newProduct = this.createProductBox(product);
@@ -250,6 +266,22 @@ class ShopMenu extends Menu {
     this.updateCollectionPageButtons(this.pageButtonsTop);
     this.updateCollectionPageButtons(this.pageButtonsBottom);
     super.removeLoadingModal();
+  }
+  updateProductPrices() {
+    for (const productBox of this.productsGrid.children) {
+      const priceText = productBox.querySelector(".price-container p");
+      const buyButton = productBox.querySelector(
+        ".price-container .buy-button"
+      );
+      const price = parseInt(priceText.innerText);
+      if (price > userDataBase.coins) {
+        priceText.classList.add("overpriced");
+        buyButton.classList.add("overpriced");
+      } else {
+        priceText.classList.remove("overpriced");
+        buyButton.classList.remove("overpriced");
+      }
+    }
   }
   createCollectionChangePagePanel() {
     const changePagePanel = createHTMLElement("div", "change-page-buttons");
@@ -358,6 +390,36 @@ class ShopMenu extends Menu {
       this.openBuyProductsSubmenu();
     });
     return goBackButton;
+  }
+  buyPorduct(product) {
+    if (userDataBase.coins >= product.price) {
+      let packsAmount = 1;
+      let packId = product.set + "-pack";
+      switch (product.productType) {
+        case "bundle":
+          packId += 1;
+          packsAmount = 6;
+          break;
+        case "elite_trainer_box":
+          packId += 1;
+          packsAmount = 13;
+          break;
+        case "special_collection_box":
+          packId += 1;
+          packsAmount = 30;
+          break;
+        case "mega_box":
+          packId += 1;
+          packsAmount = 100;
+          break;
+        default:
+          packId = product.id;
+          break;
+      }
+      userDataBase.addPacks(packId, product.set, packsAmount);
+      userDataBase.removeCoins(product.price);
+      this.updateProductPrices();
+    }
   }
 }
 export default ShopMenu;

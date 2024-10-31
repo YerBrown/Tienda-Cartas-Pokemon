@@ -80,3 +80,15 @@ export function capitalizeWords(str){
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+export async function loadImagesBeforRendering(urls) {
+  const images = urls.map((url) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve(img);
+    });
+  });
+
+  const loadedImages = await Promise.all(images);
+}
