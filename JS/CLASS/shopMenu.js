@@ -7,6 +7,7 @@ import {
   getProductById,
 } from "../completeProductList.js";
 import { dataBase, userDataBase } from "../mainPageController.js";
+import OpenPacksModal from './openPacksModal.js';
 class ShopMenu extends Menu {
   constructor(parentId) {
     addAllProducts();
@@ -27,7 +28,7 @@ class ShopMenu extends Menu {
   }
   loadMenu() {
     super.loadMenu();
-    this.openOpenPacksSubmenu();
+    this.openBuyProductsSubmenu();
   }
   openBuyProductsSubmenu() {
     this.mainNode.innerHTML = "";
@@ -38,7 +39,7 @@ class ShopMenu extends Menu {
     this.mainNode.innerHTML = "";
     this.mainNode.appendChild(this.openPacksSubmenu);
     this.openPacksSubmenu.innerHTML = "";
-    this.openPacksSubmenu.appendChild(this.myPacksPanel);
+    this.openPacksSubmenu.append(this.myPacksPanel, this.closeMyPacksButton);
     this.updateMyPackPanel();
   }
   //Comprar productos submenu
@@ -46,7 +47,8 @@ class ShopMenu extends Menu {
     this.buyProductsSubmenu = createHTMLElement("div", "buy-products-submenu");
     const topPanel = this.createTopPanel();
     const bottomPanel = this.createBottomPanel();
-    this.buyProductsSubmenu.append(topPanel, bottomPanel);
+    const openMyPacksButton = this.createOpenMyPacksButton();
+    this.buyProductsSubmenu.append(topPanel, bottomPanel, openMyPacksButton);
   }
   createTopPanel() {
     this.topPanelArtwork = createHTMLElement("div", "shop-top-panel", [
@@ -100,6 +102,14 @@ class ShopMenu extends Menu {
 
     bottomPanel.append(filterPanel, this.productsViewPanel);
     return bottomPanel;
+  }
+  createOpenMyPacksButton() {
+    const myPacksButton = createHTMLElement("button", "open-my-packs-button");
+    myPacksButton.innerText = "My Packs";
+    myPacksButton.addEventListener("click", () => {
+      this.openOpenPacksSubmenu();
+    });
+    return myPacksButton;
   }
   createFilterBar() {
     const filterPanel = createHTMLElement("div", "shop-filter-panel");
@@ -304,7 +314,8 @@ class ShopMenu extends Menu {
   createOpenPacksSubmenu() {
     this.openPacksSubmenu = createHTMLElement("div", "open-packs-submenu");
     this.myPacksPanel = this.createMyPacksPanel();
-    this.openPackModal = this.createOpenPackModal();
+    this.openPackModal = new OpenPacksModal(this);
+    this.closeMyPacksButton = this.createCloseMyPacksButton();
   }
   createMyPacksPanel() {
     const myPacksPanel = createHTMLElement("div", "my-packs-panel");
@@ -336,52 +347,17 @@ class ShopMenu extends Menu {
     amountText.innerText = pack.amount;
     currentPack.append(currentImg, amountText);
     currentPack.addEventListener("click", () => {
-      this.openOpenPackModal(pack);
+      this.openPackModal.openOpenPackModal(pack);
     });
     return currentPack;
   }
-  createOpenPackModal() {
-    const modalParent = createHTMLElement("div", "open-pack-modal");
-    this.modalPackImg = createImgElement(
-      "/ASSETS/images/pokemon-card-back.webp"
-    );
-    const openButton = createHTMLElement("button", "open-pack-button");
-    openButton.addEventListener("click", () => {
-      // TODO: Open pack logic, convertirlo en una funcion
-      const obtainedCards = [];
-      for (let i = 0; i < 5; i++) {
-        const newCard = dataBase.getRandomCardOfSet(this.currentPack.set);
-        obtainedCards.push(newCard);
-      }
-      console.log(obtainedCards);
-      userDataBase.addCardsToCollection(obtainedCards);
-      userDataBase.removePacks(this.currentPack.packid, 1);
-      this.closeOpenPackModal();
-      this.updateMyPackPanel();
+  createCloseMyPacksButton() {
+    const goBackButton = createHTMLElement("button", "close-my-packs-button");
+    goBackButton.innerText = "Go Back";
+    goBackButton.addEventListener("click", () => {
+      this.openBuyProductsSubmenu();
     });
-    openButton.innerText = "Open Pack";
-    const closeButton = createHTMLElement(
-      "button",
-      "close-open-pack-modal-button"
-    );
-    closeButton.innerText = "Close";
-    closeButton.addEventListener("click", () => {
-      this.closeOpenPackModal();
-    });
-    modalParent.append(this.modalPackImg, openButton, closeButton);
-    return modalParent;
-  }
-  async openOpenPackModal(pack) {
-    this.currentPack = pack;
-    const modalParent = document.getElementById("shop-menu");
-    modalParent.appendChild(this.openPackModal);
-    super.addLoadingModal("open-pack-modal");
-    this.modalPackImg.src = getProductById(this.currentPack.packid).imageUrl;
-    await dataBase.getCardsOfSetById(this.currentPack.set);
-    super.removeLoadingModal();
-  }
-  closeOpenPackModal() {
-    this.openPackModal.parentNode.removeChild(this.openPackModal);
+    return goBackButton;
   }
 }
 export default ShopMenu;

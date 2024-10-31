@@ -6,10 +6,12 @@
   background-image: url("../ASSETS/images/a1TKOxQ.jpeg");
   background-size: 60vw 60vw;
 }
+
 #shop-top-panel h1 {
   z-index: 10;
   transform: translateY(-100%);
 }
+
 #shop-top-panel img {
   position: absolute;
   bottom: 0;
@@ -31,6 +33,7 @@
   transform: translateX(-15vw) translateY(45%) rotateZ(-10deg);
   z-index: 2;
 }
+
 #shop-top-panel #example-card-4 {
   transform: translateX(35vw) translateY(30%) rotateZ(10deg);
   z-index: 1;
@@ -133,7 +136,7 @@
   font-weight: bold;
 }
 
-.product-box > img {
+.product-box>img {
   width: 90%;
   height: 75%;
   object-fit: contain;
@@ -148,6 +151,15 @@
 .price-container img {
   width: 1.1vw;
 }
+
+#open-my-packs-button {
+  position: fixed;
+  top: 10vh;
+  right: 5vh;
+  z-index: 10;
+  padding: 1vw;
+}
+
 /* Open packs submenu */
 #open-packs-submenu {
   display: flex;
@@ -155,20 +167,24 @@
   height: 100%;
   box-sizing: border-box;
 }
+
 #my-packs-panel {
   position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   background-color: rgba(255, 255, 255, 0.892);
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
 }
+
 #my-packs-title {
   font-family: var(--font-title-1);
   font-size: 4vw;
 }
+
 #my-packs-grid {
   display: grid;
   justify-content: center;
@@ -181,6 +197,7 @@
   width: 100%;
   box-sizing: border-box;
 }
+
 .pack {
   display: flex;
   position: relative;
@@ -188,9 +205,11 @@
   height: 100%;
   justify-content: center;
 }
+
 .pack img {
   width: 100%;
 }
+
 .pack p {
   position: absolute;
   bottom: 1vw;
@@ -204,32 +223,40 @@
   box-sizing: border-box;
   margin: 0;
 }
-
+#close-my-packs-button {
+  position: fixed;
+  top: 10vh;
+  right: 5vh;
+  z-index: 10;
+  padding: 1vw;
+}
 #open-pack-modal {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   gap: 3vw;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(255, 255, 255, 0.9);
-  padding: 10vw;
+  padding: 2vw;
   box-sizing: border-box;
 }
+
 #open-pack-modal img {
-  height: 60%;
+  height: 70%;
+  width: 100%;
   object-fit: contain;
 }
+
 #open-pack-modal #close-open-pack-modal-button {
   width: auto;
-  padding: 2vw;
   position: absolute;
   top: 5vw;
   left: 5vw;
 }
+
 #open-pack-modal button {
-  width: 30%;
-  padding: 2vw;
+  padding: 1vw;
 }
