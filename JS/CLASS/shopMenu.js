@@ -37,6 +37,9 @@ class ShopMenu extends Menu {
   openBuyProductsSubmenu() {
     this.mainNode.innerHTML = "";
     this.mainNode.appendChild(this.buyProductsSubmenu);
+    if (this.notificationContainer) {
+      this.notificationContainer.innerHTML='';
+    }
     this.updateProductsViewPanel();
   }
   openOpenPacksSubmenu() {
