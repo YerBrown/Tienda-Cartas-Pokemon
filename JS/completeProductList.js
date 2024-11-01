@@ -6,26 +6,31 @@ export const productTypes = [
     id: "pack",
     name: "Booster Pack",
     price: 100,
+    packsAmount: 1
   },
   {
     id: "bundle",
     name: "Booster Bundle",
     price: 500,
+    packsAmount: 6
   },
   {
     id: "elite_trainer_box",
     name: "Elite Trainer Box",
     price: 1000,
+    packsAmount: 13
   },
   {
     id: "special_collection_box",
     name: "Special Collection Box",
     price: 2000,
+    packsAmount: 30
   },
   {
     id: "mega_box",
     name: "Mega Box",
     price: 5000,
+    packsAmount: 100
   },
 ];
 const shopProductsImagesBasePath = "ASSETS/images/shop-items";
@@ -90,21 +95,23 @@ function addProductsBySet(
 }
 function createProductByType(set, productType, number, filetype) {
   const productId = `${set}-${productType + number}`;
-  const setName = productTypes.find(
+  const productTypeInfo =  productTypes.find(
     (product) => product.id == productType
-  ).name;
+  );
+  const setName =productTypeInfo.name;
   const setData = dataBase.getSetById(set);
   const productName = setData.name + " - " + setName + " " + number;
   const imageUrl = `${shopProductsImagesBasePath}/${set}/${productType}_${number}.${filetype}`;
-  const price = productTypes.find((product) => product.id == productType).price;
+  const price = productTypeInfo.price;
+  const packsAmount = productTypeInfo.packsAmount;
   return new ShopProduct(
     productId,
     productName,
     set,
     productType,
     imageUrl,
-    price
-  );
+    price,
+    packsAmount  );
 }
 export function getProductsByFilter(productFilter, setFilter, page, pageSize) {
   const productsMeetFilter = [];

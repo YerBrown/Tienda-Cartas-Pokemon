@@ -1,4 +1,4 @@
-import { navBar } from "../mainPageController.js";
+import { navBar, shopMenu } from "../mainPageController.js";
 class UserDataBase {
   constructor() {
     this.coins = 0;
@@ -124,6 +124,9 @@ class UserDataBase {
       this.coins = 0;
     }
     navBar.updateCoinsText(this.coins);
+    if (shopMenu) {
+      shopMenu.updateProductPrices();
+    }
     this.saveLocalStorageData();
   }
   isCardInCollection(cardId) {

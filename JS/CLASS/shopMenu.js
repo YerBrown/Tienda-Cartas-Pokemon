@@ -234,9 +234,53 @@ class ShopMenu extends Menu {
     buyButton.addEventListener("click", () => {
       this.buyPorduct(productData);
     });
+    const moreInfoButton = createHTMLElement("button", "", [
+      "more-info-button",
+    ]);
+    moreInfoButton.innerText = "i";
+    const moreInfoText = createHTMLElement("p", "", [
+      "product-description",
+      "disabled",
+    ]);
+    // Enseñar la descripcion si pone el raton encima
+    moreInfoButton.addEventListener("mouseenter", () => {
+      if (moreInfoText.classList.contains("disabled")) {
+        moreInfoText.classList.remove("disabled");
+      }
+    });
+    moreInfoButton.addEventListener("mouseleave", () => {
+      if (!moreInfoText.classList.contains("disabled")) {
+        moreInfoText.classList.add("disabled");
+      }
+    });
+    moreInfoButton.addEventListener("touchstart", () => {
+      if (moreInfoText.classList.contains("disabled")) {
+        moreInfoText.classList.remove("disabled");
+      }
+    });
+    moreInfoButton.addEventListener("touchend", () => {
+      if (!moreInfoText.classList.contains("disabled")) {
+        moreInfoText.classList.add("disabled");
+      }
+    });
+    const setData = dataBase.getSetById(productData.set);
+    const moreInfoString =
+      productData.name +
+      "\ncontains " +
+      productData.packsAmount +
+      " booster pack of set " +
+      setData.name;
+
+    moreInfoText.innerText = moreInfoString;
     priceParent.append(productPrice, coinImg, buyButton);
 
-    productContainer.append(productImg, productName, priceParent);
+    productContainer.append(
+      moreInfoButton,
+      productImg,
+      productName,
+      priceParent,
+      moreInfoText
+    );
     // Si el valor es mayor al dinero
     if (productData.price > userDataBase.coins) {
       productPrice.classList.add("overpriced");
@@ -268,18 +312,20 @@ class ShopMenu extends Menu {
     super.removeLoadingModal();
   }
   updateProductPrices() {
-    for (const productBox of this.productsGrid.children) {
-      const priceText = productBox.querySelector(".price-container p");
-      const buyButton = productBox.querySelector(
-        ".price-container .buy-button"
-      );
-      const price = parseInt(priceText.innerText);
-      if (price > userDataBase.coins) {
-        priceText.classList.add("overpriced");
-        buyButton.classList.add("overpriced");
-      } else {
-        priceText.classList.remove("overpriced");
-        buyButton.classList.remove("overpriced");
+    if (document.getElementById("buy-products-submenu")) {
+      for (const productBox of this.productsGrid.children) {
+        const priceText = productBox.querySelector(".price-container p");
+        const buyButton = productBox.querySelector(
+          ".price-container .buy-button"
+        );
+        const price = parseInt(priceText.innerText);
+        if (price > userDataBase.coins) {
+          priceText.classList.add("overpriced");
+          buyButton.classList.add("overpriced");
+        } else {
+          priceText.classList.remove("overpriced");
+          buyButton.classList.remove("overpriced");
+        }
       }
     }
   }
@@ -393,33 +439,38 @@ class ShopMenu extends Menu {
   }
   buyPorduct(product) {
     if (userDataBase.coins >= product.price) {
-      let packsAmount = 1;
-      let packId = product.set + "-pack";
-      switch (product.productType) {
-        case "bundle":
-          packId += 1;
-          packsAmount = 6;
-          break;
-        case "elite_trainer_box":
-          packId += 1;
-          packsAmount = 13;
-          break;
-        case "special_collection_box":
-          packId += 1;
-          packsAmount = 30;
-          break;
-        case "mega_box":
-          packId += 1;
-          packsAmount = 100;
-          break;
-        default:
-          packId = product.id;
-          break;
+      let packsAmount = product.packsAmount;
+      let packId = product.set + "-pack1";
+      if (product.productType == "pack") {
+        packId = product.id;
       }
       userDataBase.addPacks(packId, product.set, packsAmount);
       userDataBase.removeCoins(product.price);
       this.updateProductPrices();
+      this.createBuyNotification(packId, product.set, packsAmount);
     }
+  }
+  createBuyNotification(packid, set, amount) {
+    this.notificationContainer = document.getElementById(
+      "buy-notification-container"
+    );
+    if (!this.notificationContainer) {
+      this.notificationContainer = createHTMLElement(
+        "div",
+        "buy-notification-container"
+      );
+      this.buyProductsSubmenu.appendChild(this.notificationContainer);
+    }
+    this.notificationContainer.innerHTML = "";
+    const notificationParent = createHTMLElement("div", "", [
+      "buy-notification",
+    ]);
+    const packImage = getProductById(packid).imageUrl;
+    const packImg = createImgElement(packImage, "pack of set " + set);
+    const amountText = createHTMLElement("p");
+    amountText.innerText = "x" + amount;
+    notificationParent.append(packImg, amountText);
+    this.notificationContainer.appendChild(notificationParent);
   }
 }
 export default ShopMenu;

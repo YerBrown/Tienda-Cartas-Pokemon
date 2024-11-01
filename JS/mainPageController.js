@@ -7,12 +7,12 @@ import UserDataBase from "./CLASS/userDataBase.js";
 
 // Declarar los distintos menus
 const parentId = "parent";
+export let shopMenu;
+let pokemonSetsMenu;
 export const navBar = new Nav();
 export const dataBase = new CardsDataBase();
 export const userDataBase = new UserDataBase();
 
-let pokemonSetsMenu;
-let shopMenu;
 
 function loadNavBar() {
   navBar.loadNavBar();

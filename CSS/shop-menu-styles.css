@@ -126,6 +126,7 @@
   overflow: hidden;
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .product-box p {
@@ -153,12 +154,13 @@
 .price-container img {
   height: 100%;
   width: 2vw;
-  object-fit: contain ;
+  object-fit: contain;
 }
 
 #open-my-packs-button {
   position: fixed;
   top: 10vh;
+  width: 6vw;
   right: 5vh;
   z-index: 10;
   padding: 1vw;
@@ -169,6 +171,75 @@
 
 .buy-button.overpriced {
   background-color: rgb(40, 40, 40);
+  text-decoration: line-through;
+}
+.product-box .more-info-button {
+  position: absolute;
+  top: 2vw;
+  right: 2vw;
+  width: 15%;
+  font-weight: bold;
+  z-index: 2;
+}
+.product-box .product-description {
+  position: absolute;
+  display: flex;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.8);
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 2vw;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+.product-description.disabled {
+  display: none;
+}
+
+#buy-notification-container {
+  position: fixed;
+  top: 12vh;
+  right: 5vh;
+  z-index: 9;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  width: 6vw;
+  height: 15vh;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#buy-notification-container .buy-notification {
+  width: 80%;
+  
+  animation: buyNotificationAnim 2s ease-in-out forwards;
+}
+
+.buy-notification img {
+  width: 100%;
+}
+.buy-notification p {
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 50px;
+  text-align: center;
+}
+
+@keyframes buyNotificationAnim {
+  0%{
+    transform: translateY(0) scale(0.1);
+  }
+  20%{
+    transform: scale(1);
+  }
+  100%{
+    transform: translateY(-150%);
+  }
 }
 
 /* Open packs submenu */

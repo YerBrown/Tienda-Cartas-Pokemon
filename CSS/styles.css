@@ -182,6 +182,7 @@ button {
   outline: 2px solid black;
   font-family: var(--font-general);
   padding: 1vw;
+  font-size: 1vw;
 }
 
 button:hover {
@@ -270,6 +271,9 @@ select {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+}
+.disabled{
+  display: none;
 }
 @media (max-height: 700px) {
   
