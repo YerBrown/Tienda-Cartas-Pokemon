@@ -6,6 +6,7 @@ import {
 class Menu {
   constructor(parentId) {
     this.parentId = parentId;
+    this.createLoadingModal();
     this.mainNode = this.createMenu();
   }
   loadMenu() {
@@ -15,7 +16,6 @@ class Menu {
   }
   createMenu() {
     const menu = document.createElement("div");
-    this.createLoadingModal();
     return menu;
   }
   createLoadingModal() {

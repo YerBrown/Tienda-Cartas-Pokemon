@@ -3,8 +3,6 @@
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
-  background-image: url("../ASSETS/images/a1TKOxQ.jpeg");
-  background-size: 60vw 60vw;
 }
 #shop-top-panel h1 {
   z-index: 10;

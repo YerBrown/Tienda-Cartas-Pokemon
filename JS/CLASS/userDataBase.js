@@ -5,7 +5,7 @@ class UserDataBase {
     this.lastSaveDate = new Date();
     this.collection = [];
     this.packs = [];
-    this.winCoinsCooldown = 1000 * 10;
+    this.winCoinsCooldown = 1000 * 60;
     this.winAmount = 100;
     this.updateUserData();
     this.checkTimeBetweenSaves();
@@ -147,6 +147,42 @@ class UserDataBase {
     setTimeout(() => {
       this.winCoins();
     }, this.winCoinsCooldown);
+  }
+  getCollectionCardsByFilter(elementFilter, page, pageSize) {
+    const cardsMeetFilter = [];
+    const resultObject = {
+      results: [],
+      page: page,
+      pageSize: pageSize,
+      totalPages: 0,
+    };
+    for (const cardObject of this.collection) {
+      if (this.isCardsMeetFilters(cardObject.card, elementFilter)) {
+        cardsMeetFilter.push(cardObject.card);
+      }
+    }
+
+    const totalPages = Math.ceil(cardsMeetFilter.length / pageSize);
+    if (page > totalPages || page < 0) {
+      return resultObject;
+    }
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    const paginatedElements = cardsMeetFilter.slice(start, end);
+
+    resultObject.results = paginatedElements;
+    resultObject.totalPages = totalPages;
+    return resultObject;
+  }
+  isCardsMeetFilters(card, elementFilter) {
+    if (card.supertype != "Pokémon") {
+      return false;
+    }
+    const elementFilterResult =
+      elementFilter == "" ||
+      elementFilter.some((element) => card.types.includes(element));
+
+    return elementFilterResult;
   }
 }
 export default UserDataBase;

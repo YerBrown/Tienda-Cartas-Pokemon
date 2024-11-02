@@ -2,7 +2,6 @@ import { createHTMLElement, createImgElement } from "../codigo.js";
 import {
   loadSetsMenu,
   loadShopMenu,
-  loadMyCollectionMenu,
   loadCombatsMenu,
 } from "../mainPageController.js";
 class Nav {
@@ -28,7 +27,7 @@ class Nav {
 
     const listItem1 = createHTMLElement("li");
     const linkItem1 = createHTMLElement("a");
-    linkItem1.innerText = "Pokémon Sets";
+    linkItem1.innerText = "Pokémon Collection";
     linkItem1.addEventListener("click", () => {
       loadSetsMenu();
     });
@@ -42,14 +41,6 @@ class Nav {
     });
     listItem2.appendChild(linkItem2);
 
-    const listItem3 = createHTMLElement("li");
-    const linkItem3 = createHTMLElement("a");
-    linkItem3.innerText = "My Collection";
-    linkItem3.addEventListener("click", () => {
-      loadMyCollectionMenu();
-    });
-    listItem3.appendChild(linkItem3);
-
     const listItem4 = createHTMLElement("li");
     const linkItem4 = createHTMLElement("a");
     linkItem4.innerText = "Pokémon Combats";
@@ -58,7 +49,7 @@ class Nav {
     });
     listItem4.appendChild(linkItem4);
 
-    list.append(listItem1, listItem2, listItem3, listItem4);
+    list.append(listItem1, listItem2, listItem4);
 
     const coinsContainer = createHTMLElement("div", "coins-panel");
     this.coinsText = createHTMLElement("p", "coins-text");

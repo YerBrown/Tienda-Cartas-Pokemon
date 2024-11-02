@@ -24,6 +24,7 @@ class CardsDataBase {
     promesas.push(this.saveSets());
 
     await Promise.all(promesas);
+    console.log(this);
   }
   async saveTypes() {
     this.types = await getTypes();

@@ -1,0 +1,154 @@
+#select-combat-submenu {
+  min-height: 100%;
+}
+
+#select-combat-panel {
+  display: flex;
+  height: 20vh;
+  background-color: rgb(168, 168, 168);
+  justify-content: space-between;
+}
+
+#multiplayer-option,
+#singleplayer-option {
+  background-color: rgb(123, 123, 123);
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+#multiplayer-option {
+  color: red;
+  position: relative;
+}
+#singleplayer-option {
+  color: blue;
+}
+
+#coomingsoon-filter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.525);
+  outline: 10px solid black;
+  border-radius: 2px;
+}
+#coomingsoon-filter h4 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateZ(-20deg);
+  margin: 0;
+  font-size: 150%;
+}
+/* Select Cards menu */
+#select-combat-submenu {
+  display: flex;
+  flex-direction: column;
+  gap: 5vh;
+}
+#select-combat-submenu p {
+  padding: 2vw;
+  background-color: white;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+#card-slots-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1vw;
+}
+.combat-card-slot {
+  width: 100%;
+  box-shadow: 0 0 10px 5px red;
+  border-radius: 0.8vw;
+}
+#start-combat-button {
+  font-size: 4vw;
+}
+/* Select Cards Modal */
+#select-card-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.89);
+  padding: 2vw;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 2vh;
+}
+#select-card-modal-close-button {
+  position: absolute;
+  top: 10vh;
+  right: 5vw;
+}
+#element-filters-panel{
+  position: absolute;
+  top: 10vh;
+  left: 5vw;
+  background-color: black;
+  color: white;
+  z-index: 2;
+  padding: 20px;
+  height: auto;
+  transition: max-height 1s ease;
+  max-height: 60px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  flex-direction: column;
+  border-radius: 1vw;
+}
+#element-filters-panel:hover{
+  max-height: 100%;
+}
+
+#element-filters-panel h4{
+  margin-top: 0;
+}
+
+#current-selected-slot-card {
+  width: 10vw;
+}
+#my-collection-container {
+  display: grid;
+  width: 100%;
+  gap: 2vw;
+  grid-template-columns: repeat(5, 1fr);
+  justify-content: center;
+  padding: 2vw;
+  box-sizing: border-box;
+}
+#my-collection-panel {
+  position: relative;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+#collection-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+
+}
+#collection-panel .pokemon-card{
+  border-radius: 1vw;
+}
+
+.selected{
+  box-shadow: 0 0 10px 10px green;
+}
+
+.selected-in-other-slot {
+  box-shadow: 0 0 10px 10px red;
+}
