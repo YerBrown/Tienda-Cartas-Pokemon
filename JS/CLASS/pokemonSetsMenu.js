@@ -216,9 +216,11 @@ class PokemonSetsMenu extends Menu {
     this.mainNode.innerHTML = "";
     this.mainNode.appendChild(this.selectSet);
     if (this.allSetsData == null) {
-      super.addLoadingModal(this.selectSet.id);
+      super.addLoadingModal();
       await this.loadAllSet();
       super.removeLoadingModal();
+    }else {
+      this.addAllSetsLogos(this.allSetsData);
     }
   }
   async loadAllSet() {
@@ -240,6 +242,7 @@ class PokemonSetsMenu extends Menu {
     this.addAllSetsLogos(this.allSetsData);
   }
   addAllSetsLogos(allSets) {
+    this.selectSetGrid.innerHTML = '';
     for (const setData of allSets) {
       const newSetLogo = this.createSetLogo(setData);
       this.selectSetGrid.append(newSetLogo);
@@ -269,11 +272,14 @@ class PokemonSetsMenu extends Menu {
   }
   updateSetInfoPanel() {
     this.setInfoLogo.src = this.currentSet.images.logo;
-    this.setName.innerText = "Set Name: " + this.currentSet.name;
-    this.setTotalCards.innerText = "Total Cards: " + this.currentSet.total;
+    this.setName.innerText = "Set Name:\n" + this.currentSet.name;
+    this.setTotalCards.innerText = "Total Cards: " + userDataBase.getAmountOfCardBySet(this.currentSet.id) + ' / '+ this.currentSet.total;
     this.setReleaseDate.innerText =
       "Release Date: " + this.currentSet.releaseDate;
     this.setSymbol.src = this.currentSet.images.symbol;
+  }
+  updateCollectionCardsCounter(){
+
   }
   createSetLogo(setData) {
     const newSetLogo = createHTMLElement("div", "", [
@@ -295,7 +301,7 @@ class PokemonSetsMenu extends Menu {
     return newSetLogo;
   }
   async updateCollectionPanel() {
-    super.addLoadingModal("collection");
+    super.addLoadingModal();
     // super.scrollToTop();
     const pageCards = await getCardsBySet(
       this.currentSet.id,

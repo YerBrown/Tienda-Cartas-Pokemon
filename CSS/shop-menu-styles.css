@@ -8,10 +8,8 @@
 }
 #shop-top-panel h1 {
   z-index: 10;
-  font-size: 3vw;
-  margin: 0;
-  position: absolute;
-  top: min(10vh, 30% );
+  font-size: 2.5vw;
+  transform: translateY(-50%);
 }
 
 #shop-top-panel img {
@@ -22,7 +20,7 @@
 }
 
 #shop-top-panel #example-card-1 {
-  transform: translateX(min(15vw, 15rem)) translateY(60%) rotateZ(10deg);
+  transform: translateX(min(75%, 15rem)) translateY(60%) rotateZ(10deg);
   z-index: 2;
 }
 
@@ -32,17 +30,17 @@
 }
 
 #shop-top-panel #example-card-3 {
-  transform: translateX(max(-15rem, -15vw )) translateY(60%) rotateZ(-10deg);
+  transform: translateX(max(-15rem, -75%)) translateY(60%) rotateZ(-10deg);
   z-index: 2;
 }
 
 #shop-top-panel #example-card-4 {
-  transform: translateX(min(35vw, 35rem)) translateY(30%) rotateZ(10deg);
+  transform: translateX(min(160%, 35rem)) translateY(30%) rotateZ(10deg);
   z-index: 1;
 }
 
 #shop-top-panel #example-card-5 {
-  transform: translateX(max(-35rem, -35vw)) translateY(30%) rotateZ(-10deg);
+  transform: translateX(max(-35rem, -160%)) translateY(30%) rotateZ(-10deg);
 
   z-index: 1;
 }
@@ -61,9 +59,7 @@
   border-radius: 2vw;
   justify-content: right;
   width: 15vw;
-  padding-left: 5vw;
-  padding-top: 1vw;
-  font-size: 1rem;
+  font-size: 1vw;
 }
 
 .filter-input-container {
@@ -73,10 +69,6 @@
   padding: 0 10px;
   width: 100%;
   box-sizing: border-box;
-}
-
-.filter-input-container input {
-  width: 1vw;
 }
 
 #product-filter,
@@ -100,14 +92,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1vw;
+  padding: 1%;
   gap: 1vw;
 }
 
 #products-view-grid {
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2vw;
   border-radius: 1vw;
   padding: 1vw;
@@ -121,34 +113,44 @@
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   overflow: hidden;
   border-radius: 1vw;
   padding: 1vw;
   background-color: white;
+  gap: 2%;
+  outline: 2px solid black;
 }
 
 .product-box p {
   font-size: 1vw;
   font-weight: bold;
   text-align: center;
+  margin: 0;
 }
+
 .product-box .product-name {
   width: 100%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-box > img {
-  width: 90%;
-  height: 60%;
+  width: 100%;
+  height: 50%;
   object-fit: contain;
 }
 
 .product-box .price-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1vw;
   width: 100%;
+  height: 20%;
 }
 
 .price-container img {
@@ -156,7 +158,10 @@
   width: 2vw;
   object-fit: contain;
 }
-
+.price-container button {
+  height: 100%;
+  box-sizing: border-box;
+}
 #open-my-packs-button {
   position: fixed;
   top: 10vh;
@@ -177,9 +182,11 @@
   position: absolute;
   top: 2vw;
   right: 2vw;
-  width: 15%;
   font-weight: bold;
   z-index: 2;
+  padding: 0;
+  width: 10%;
+  height: 10%;
 }
 .product-box .product-description {
   position: absolute;
@@ -187,8 +194,8 @@
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
   justify-content: center;
   align-items: center;
   margin: 0;
@@ -232,13 +239,13 @@
 }
 
 @keyframes buyNotificationAnim {
-  0%{
+  0% {
     transform: translateY(0) scale(0.1);
   }
-  20%{
+  20% {
     transform: scale(1);
   }
-  100%{
+  100% {
     transform: translateY(-150%);
   }
 }
@@ -257,7 +264,6 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.892);
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
@@ -273,9 +279,8 @@
   display: grid;
   justify-content: center;
   align-items: center;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 30vw;
-  gap: 2vw;
+  grid-template-columns: repeat(auto-fit, 200px);
+  gap: 5%;
   border-radius: 1vw;
   padding: 1vw;
   width: 100%;
@@ -292,20 +297,24 @@
 
 .pack img {
   width: 100%;
+  object-fit: contain;
 }
 
 .pack p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  bottom: 1vw;
-  width: 3vw;
-  height: 3vw;
+  bottom: 3%;
+  width: 20%;
+  height: 10%;
   background-color: white;
-  font-size: 1vw;
+  font-size: 100%;
   border-radius: 3vw;
   text-align: center;
-  padding: 1vw;
   box-sizing: border-box;
   margin: 0;
+  border: 3px solid black;
 }
 #close-my-packs-button {
   position: fixed;
@@ -317,6 +326,7 @@
 #open-pack-modal {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background-color: rgba(255, 255, 255, 0.9);
@@ -327,6 +337,7 @@
 
 #open-pack-panel {
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -347,8 +358,8 @@
 #close-open-pack-modal-button {
   width: auto;
   position: absolute;
-  top: 5vw;
-  left: 5vw;
+  top: 0;
+  left: 0;
 }
 
 #open-pack-panel button {
@@ -358,7 +369,6 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  overflow: hidden;
   position: relative;
   display: flex;
   justify-content: center;
@@ -377,67 +387,57 @@
   top: 0;
   max-height: 100%;
   max-width: 100%;
-  border-radius: 1vw;
   object-fit: scale-down;
 }
 #show-cards-panel #next-card-button {
   position: absolute;
   bottom: 10%;
 }
+#show-cards-panel #skip-button {
+  position: absolute;
+  top: 10%;
+}
 #show-cards-panel .obtained-card-pass {
   display: none;
 }
 /* Show all cards */
 #all-cards-obtained-panel {
+  position: relative;
   width: 100%;
   height: 100%;
   display: grid;
   justify-content: center;
   align-items: center;
-  grid-template-columns: repeat(5, auto);
-  grid-template-rows: 30% 30% 10%;
-  gap: 2vw;
-  box-sizing: border-box;
-
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 45% 45%;
+  gap: 1%;
 }
 #all-cards-obtained-panel img {
+  width: 100%;
   height: 100%;
-  border-radius: 1vw;
+  object-fit: contain;
 }
 
-#close-obtained-button{
-  grid-column-start: 5;
+#close-obtained-button {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%);
 }
-@media (max-height: 600px)
-{
+@media (max-height: 600px) {
   #shop-top-panel.top-panel {
     height: 100vh;
   }
-  #shop-top-panel #example-card-1 {
-    transform: translateX(min(15vw, 15rem)) translateY(60%) rotateZ(10deg);
-    z-index: 2;
+}
+@media (max-width: 900px) {
+  #shop-bottom-panel {
+    flex-direction: column;
   }
-  
-  #shop-top-panel #example-card-2 {
-    transform: translateX(0) translateY(60%) rotateZ(0);
-    z-index: 4;
+  #shop-filter-panel {
+    width: 100%;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    font-size: 3vw;
   }
-  
-  #shop-top-panel #example-card-3 {
-    transform: translateX(max(-15rem, -15vw )) translateY(60%) rotateZ(-10deg);
-    z-index: 2;
-  }
-  
-  #shop-top-panel #example-card-4 {
-    transform: translateX(min(35vw, 35rem)) translateY(30%) rotateZ(10deg);
-    z-index: 1;
-  }
-  
-  #shop-top-panel #example-card-5 {
-    transform: translateX(max(-35rem, -35vw)) translateY(30%) rotateZ(-10deg);
-  
-    z-index: 1;
-  }
-
-
 }

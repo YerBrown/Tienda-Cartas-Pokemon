@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-image: url('../ASSETS/images/a1TKOxQ.jpeg');
+  background-image: url("../ASSETS/images/a1TKOxQ.jpeg");
   background-repeat: repeat();
   background-size: 60vw 60vw;
 }
@@ -15,7 +15,6 @@
   align-items: center;
 }
 
-
 #sets-grid {
   display: grid;
   box-sizing: border-box;
@@ -24,9 +23,8 @@
   width: 100%;
   gap: 20px;
   padding: 20px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: 200px;
-
 }
 
 .set-title {
@@ -53,11 +51,10 @@
   font-weight: bold;
   background-color: white;
   border-radius: 1vw;
-  padding: .2vw;
+  padding: 0.2vw;
 }
 
 /* Set Info */
-
 
 #pokemon-set-info #info {
   display: grid;
@@ -65,25 +62,24 @@
   grid-template-rows: 25vh;
   flex-direction: row;
   align-items: center;
-  border-radius: 10px;
-  margin: 10px;
   overflow: hidden;
-
 }
 
 #info #right-panel-info {
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  box-sizing: border-box;
-  height: 100%;
   gap: 5px;
-  padding: 10px;
-  /* background-color: rgb(116, 116, 116); */
+  background-color: rgba(255, 255, 255, 0.808);
+  padding: 2vw;
+  width: 30%;
+  height: 80%;
+  border-radius: 1vw;
 }
 
-#info>img {
+#info > img {
   width: 100%;
   min-width: 200px;
   max-width: 20vw;
@@ -129,13 +125,14 @@
 
 #filter p {
   margin: 0;
+  font-size: 1.2vw;
 }
 
 #collection #collection-grid {
   display: grid;
   width: 100%;
   gap: 2vw;
-  grid-template-columns: repeat(auto-fit, 20vw);
+  grid-template-columns: repeat(5, 1fr);
   justify-content: center;
 }
 
@@ -144,8 +141,6 @@
   display: flex;
   width: 100%;
   height: 100%;
-  border-radius: 1vw;
-  overflow: hidden;
   justify-content: center;
 }
 
@@ -162,7 +157,7 @@
   right: 0;
   text-align: center;
   margin: 0 5%;
-  font-size: 2vw;
+  font-size: 1vw;
   font-weight: bold;
 }
 
@@ -219,7 +214,7 @@
     flex-direction: row;
   }
 
-  #info>img {
+  #info > img {
     max-width: 50vw;
     max-height: 10vh;
     height: 90%;

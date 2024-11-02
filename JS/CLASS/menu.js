@@ -1,4 +1,8 @@
-import { createHTMLElement, createImgElement, loadImagesBeforRendering } from "../codigo.js";
+import {
+  createHTMLElement,
+  createImgElement,
+  loadImagesBeforRendering,
+} from "../codigo.js";
 class Menu {
   constructor(parentId) {
     this.parentId = parentId;
@@ -16,20 +20,27 @@ class Menu {
   }
   createLoadingModal() {
     this.loadingModal = createHTMLElement("div", "", ["loading-modal"]);
-    const loadingText = createHTMLElement("p");
-    loadingText.innerText = "Loading data...";
+    this.loadingText = createHTMLElement("p");
+    this.loadingText.innerText = "Loading ...";
     const loadingIcon = createImgElement("./ASSETS/images/cargando.png");
 
-    this.loadingModal.append(loadingText, loadingIcon);
+    this.loadingModal.append(this.loadingText, loadingIcon);
   }
-  addLoadingModal(parentId) {
-    const parent = document.getElementById(parentId);
-    if (parent!=null) {
+  addLoadingModal(loadingStr = "") {
+    const parent = document.getElementsByTagName("body")[0];
+    if (parent != null) {
       parent.appendChild(this.loadingModal);
+    }
+    if (loadingStr != "") {
+      this.loadingText.innerText = loadingStr;
+    } else {
+      this.loadingText.innerText = "Loading ...";
     }
   }
   removeLoadingModal() {
-    this.loadingModal.parentNode.removeChild(this.loadingModal);
+    if (this.loadingModal.parentNode) {
+      this.loadingModal.parentNode.removeChild(this.loadingModal);
+    }
   }
   scrollToTop() {
     window.scrollTo({

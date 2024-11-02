@@ -23,6 +23,9 @@ class OpenPacksModal {
       "",
       ["selectable"]
     );
+    this.modalPackImg.addEventListener("click", () => {
+      this.openPack();
+    });
     this.packsAmount = createHTMLElement("p", "pack-amount");
     const openButton = createHTMLElement("button", "open-pack-button");
     openButton.addEventListener("click", () => {
@@ -45,19 +48,13 @@ class OpenPacksModal {
     );
     return modalParent;
   }
-  openPack(){
+  openPack() {
     for (let i = 0; i < this.numberCardsInPack; i++) {
-      const newCard = dataBase.getRandomCardOfSet(
-        this.currentPack.set
-      );
+      const newCard = dataBase.getRandomCardOfSet(this.currentPack.set);
       this.currentObtainedCards.push(newCard);
     }
-    console.log(this.currentObtainedCards);
     userDataBase.addCardsToCollection(this.currentObtainedCards);
     userDataBase.removePacks(this.currentPack.packid, 1);
-    if (this.currentPack.amount==1) {
-      --this.currentPack.amount;
-    }
     this.showObtainedCards();
     this.shopMenu.updateMyPackPanel();
   }
@@ -87,12 +84,15 @@ class OpenPacksModal {
       "button",
       "close-obtained-button"
     );
-    closePanelButton.innerText = "Open Other Pack";
+    if (this.currentPack.amount > 0) {
+      closePanelButton.innerText = "Open Other Pack";
+    } else {
+      closePanelButton.innerText = "Close";
+    }
     closePanelButton.addEventListener("click", () => {
-      console.log(this.currentPack.amount)
       if (this.currentPack.amount > 0) {
         this.openOpenPackModal();
-      }else{
+      } else {
         this.closeOpenPackModal();
       }
     });
@@ -108,6 +108,9 @@ class OpenPacksModal {
     const nextCardButton = createHTMLElement("button", "next-card-button");
     nextCardButton.innerHTML = "Next Card";
     nextCardButton.addEventListener("click", () => this.passToNextCard());
+    const skipButton = createHTMLElement("button", "skip-button");
+    skipButton.innerHTML = "Skip";
+    skipButton.addEventListener("click", () => this.showAllCardsObtained());
     const closeButton = createHTMLElement(
       "button",
       "close-open-pack-modal-button"
@@ -117,7 +120,12 @@ class OpenPacksModal {
       this.closeOpenPackModal();
     });
     this.cardContainer = createHTMLElement("div", "obtained-cards-container");
-    this.showCardsPanel.append(nextCardButton, closeButton, this.cardContainer);
+    this.showCardsPanel.append(
+      nextCardButton,
+      skipButton,
+      closeButton,
+      this.cardContainer
+    );
   }
   createObtainedCard(cardInfo) {
     const newCard = createImgElement(
@@ -137,6 +145,7 @@ class OpenPacksModal {
     return newCard;
   }
   async showObtainedCards() {
+    this.shopMenu.addLoadingModal("Opening ...");
     this.mainNode.innerHTML = "";
     this.cardContainer.innerHTML = "";
     // Cargar todas las imagenes de las cartas para que cargue a la vez
@@ -150,6 +159,7 @@ class OpenPacksModal {
       this.cardContainer.appendChild(newCard);
     }
     this.mainNode.appendChild(this.showCardsPanel);
+    this.shopMenu.removeLoadingModal();
   }
   passToNextCard() {
     const currentCard = this.cardContainer.children[this.currentCardIndex];
@@ -159,9 +169,11 @@ class OpenPacksModal {
       this.showAllCardsObtained();
     }
   }
-  async openOpenPackModal(pack = null) {
-    if (pack) {
-      this.currentPack = pack;
+  async openOpenPackModal(packId = "") {
+    if (packId != "") {
+      this.currentPack = userDataBase.getPackById(packId);
+    }else {
+
     }
     const modalParent = document.getElementById("shop-menu");
     modalParent.appendChild(this.mainNode);
@@ -169,10 +181,8 @@ class OpenPacksModal {
     this.currentCardIndex = 0;
     this.mainNode.innerHTML = "";
     this.mainNode.appendChild(this.openPackPanel);
-    this.shopMenu.addLoadingModal("open-pack-modal");
-    this.modalPackImg.src = getProductById(
-      this.currentPack.packid
-    ).imageUrl;
+    this.shopMenu.addLoadingModal();
+    this.modalPackImg.src = getProductById(this.currentPack.packid).imageUrl;
     this.packsAmount.innerText = "x " + this.currentPack.amount;
     await dataBase.getCardsOfSetById(this.currentPack.set);
     this.shopMenu.removeLoadingModal();

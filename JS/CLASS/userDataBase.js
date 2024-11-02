@@ -93,6 +93,7 @@ class UserDataBase {
     const removedPack = this.getPackById(id);
     if (removedPack) {
       if (removedPack.amount <= amount) {
+        removedPack.amount = 0;
         const packIndex = this.collection.indexOf(removedPack);
         this.packs.splice(packIndex, 1);
       } else {
@@ -122,6 +123,8 @@ class UserDataBase {
     this.coins = newCoinsValue;
     if (this.coins < 0) {
       this.coins = 0;
+    } else if (this.coins > 100000) {
+      this.coins = 100000;
     }
     navBar.updateCoinsText(this.coins);
     if (shopMenu) {
@@ -134,7 +137,9 @@ class UserDataBase {
     return findedCard ? true : false;
   }
   getAmountOfCardBySet(set) {
-    const cardsOfSet = this.collection.filter((cardInfo) => cardInfo.card.set.id == set).length;
+    const cardsOfSet = this.collection.filter(
+      (cardInfo) => cardInfo.card.set.id == set
+    ).length;
     return cardsOfSet;
   }
   winCoins() {
