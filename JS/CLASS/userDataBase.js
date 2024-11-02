@@ -133,6 +133,10 @@ class UserDataBase {
     const findedCard = this.collection.find((card) => card.card.id == cardId);
     return findedCard ? true : false;
   }
+  getAmountOfCardBySet(set) {
+    const cardsOfSet = this.collection.filter((cardInfo) => cardInfo.card.set.id == set).length;
+    return cardsOfSet;
+  }
   winCoins() {
     this.addCoins(this.winAmount);
     setTimeout(() => {

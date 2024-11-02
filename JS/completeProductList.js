@@ -47,15 +47,15 @@ export function getProductsSets() {
 }
 export function addAllProducts() {
   allProducts = [];
-  addProductsBySet("png", "sm11", 4, 0, 0, 0, 0);
-  addProductsBySet("png", "sv3pt5", 1, 1, 1, 1, 0);
-  addProductsBySet("png", "sv4", 4, 0, 2, 0, 0);
-  addProductsBySet("png", "sv5", 4, 0, 2, 0, 0);
-  addProductsBySet("png", "sv6", 4, 0, 1, 0, 0);
   addProductsBySet("png", "sv7", 4, 0, 1, 0, 0);
-  addProductsBySet("png", "swsh5", 4, 0, 2, 0, 0);
-  addProductsBySet("png", "swsh7", 4, 1, 0, 0, 0);
+  addProductsBySet("png", "sv6", 4, 0, 1, 0, 0);
+  addProductsBySet("png", "sv5", 4, 0, 2, 0, 0);
+  addProductsBySet("png", "sv4", 4, 0, 2, 0, 0);
+  addProductsBySet("png", "sv3pt5", 1, 1, 1, 1, 0);
   addProductsBySet("png", "swsh8", 4, 1, 0, 0, 0);
+  addProductsBySet("png", "swsh7", 4, 1, 0, 0, 0);
+  addProductsBySet("png", "swsh5", 4, 0, 2, 0, 0);
+  addProductsBySet("png", "sm11", 4, 0, 0, 0, 0);
   addProductsBySet("jpg", "xy7", 4, 0, 0, 0, 1);
 }
 function addProductsBySet(

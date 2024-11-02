@@ -401,7 +401,7 @@ class ShopMenu extends Menu {
   createMyPacksPanel() {
     const myPacksPanel = createHTMLElement("div", "my-packs-panel");
 
-    const submenuTitle = createHTMLElement("h2", "my-packs-title");
+    const submenuTitle = createHTMLElement("h2", "my-packs-title", ['top-panel']);
     submenuTitle.innerText = "My Pokémon Packs";
     this.myPacksGrid = createHTMLElement("div", "my-packs-grid");
     myPacksPanel.append(submenuTitle, this.myPacksGrid);

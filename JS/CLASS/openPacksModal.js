@@ -26,19 +26,7 @@ class OpenPacksModal {
     this.packsAmount = createHTMLElement("p", "pack-amount");
     const openButton = createHTMLElement("button", "open-pack-button");
     openButton.addEventListener("click", () => {
-      // TODO: Open pack logic, convertirlo en una funcion
-      for (let i = 0; i < this.numberCardsInPack; i++) {
-        const newCard = dataBase.getRandomCardOfSet(
-          this.shopMenu.currentPack.set
-        );
-        this.currentObtainedCards.push(newCard);
-      }
-      console.log(this.currentObtainedCards);
-      userDataBase.addCardsToCollection(this.currentObtainedCards);
-      userDataBase.removePacks(this.shopMenu.currentPack.packid, 1);
-      // this.closeOpenPackModal();
-      this.showObtainedCards();
-      this.shopMenu.updateMyPackPanel();
+      this.openPack();
     });
     openButton.innerText = "Open Pack";
     const closeButton = createHTMLElement(
@@ -56,6 +44,22 @@ class OpenPacksModal {
       closeButton
     );
     return modalParent;
+  }
+  openPack(){
+    for (let i = 0; i < this.numberCardsInPack; i++) {
+      const newCard = dataBase.getRandomCardOfSet(
+        this.currentPack.set
+      );
+      this.currentObtainedCards.push(newCard);
+    }
+    console.log(this.currentObtainedCards);
+    userDataBase.addCardsToCollection(this.currentObtainedCards);
+    userDataBase.removePacks(this.currentPack.packid, 1);
+    if (this.currentPack.amount==1) {
+      --this.currentPack.amount;
+    }
+    this.showObtainedCards();
+    this.shopMenu.updateMyPackPanel();
   }
   createCloseMyPacksButton() {
     const goBackButton = createHTMLElement("button", "close-my-packs-button");
@@ -85,7 +89,12 @@ class OpenPacksModal {
     );
     closePanelButton.innerText = "Open Other Pack";
     closePanelButton.addEventListener("click", () => {
-      this.openOpenPackModal();
+      console.log(this.currentPack.amount)
+      if (this.currentPack.amount > 0) {
+        this.openOpenPackModal();
+      }else{
+        this.closeOpenPackModal();
+      }
     });
     this.allCardsObtainedPanel.appendChild(closePanelButton);
   }
@@ -152,7 +161,7 @@ class OpenPacksModal {
   }
   async openOpenPackModal(pack = null) {
     if (pack) {
-      this.shopMenu.currentPack = pack;
+      this.currentPack = pack;
     }
     const modalParent = document.getElementById("shop-menu");
     modalParent.appendChild(this.mainNode);
@@ -162,10 +171,10 @@ class OpenPacksModal {
     this.mainNode.appendChild(this.openPackPanel);
     this.shopMenu.addLoadingModal("open-pack-modal");
     this.modalPackImg.src = getProductById(
-      this.shopMenu.currentPack.packid
+      this.currentPack.packid
     ).imageUrl;
-    this.packsAmount.innerText = "x " + this.shopMenu.currentPack.amount;
-    await dataBase.getCardsOfSetById(this.shopMenu.currentPack.set);
+    this.packsAmount.innerText = "x " + this.currentPack.amount;
+    await dataBase.getCardsOfSetById(this.currentPack.set);
     this.shopMenu.removeLoadingModal();
   }
   closeOpenPackModal() {

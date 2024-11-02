@@ -6,41 +6,43 @@
   background-image: url("../ASSETS/images/a1TKOxQ.jpeg");
   background-size: 60vw 60vw;
 }
-
 #shop-top-panel h1 {
   z-index: 10;
-  transform: translateY(-100%);
+  font-size: 3vw;
+  margin: 0;
+  position: absolute;
+  top: min(10vh, 30% );
 }
 
 #shop-top-panel img {
   position: absolute;
+  width: 20%;
+  max-width: 20em;
   bottom: 0;
-
-  width: 20vw;
 }
 
 #shop-top-panel #example-card-1 {
-  transform: translateX(15vw) translateY(45%) rotateZ(10deg);
+  transform: translateX(min(15vw, 15rem)) translateY(60%) rotateZ(10deg);
   z-index: 2;
 }
 
 #shop-top-panel #example-card-2 {
-  transform: translateX(0) translateY(50%) rotateZ(0);
+  transform: translateX(0) translateY(60%) rotateZ(0);
   z-index: 4;
 }
 
 #shop-top-panel #example-card-3 {
-  transform: translateX(-15vw) translateY(45%) rotateZ(-10deg);
+  transform: translateX(max(-15rem, -15vw )) translateY(60%) rotateZ(-10deg);
   z-index: 2;
 }
 
 #shop-top-panel #example-card-4 {
-  transform: translateX(35vw) translateY(30%) rotateZ(10deg);
+  transform: translateX(min(35vw, 35rem)) translateY(30%) rotateZ(10deg);
   z-index: 1;
 }
 
 #shop-top-panel #example-card-5 {
-  transform: translateX(-35vw) translateY(30%) rotateZ(-10deg);
+  transform: translateX(max(-35rem, -35vw)) translateY(30%) rotateZ(-10deg);
 
   z-index: 1;
 }
@@ -61,7 +63,7 @@
   width: 15vw;
   padding-left: 5vw;
   padding-top: 1vw;
-  font-size: 1vw;
+  font-size: 1rem;
 }
 
 .filter-input-container {
@@ -105,8 +107,7 @@
 #products-view-grid {
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(3, 25vw);
-  grid-auto-rows: 25vw;
+  grid-template-columns: repeat(4, 1fr);
   gap: 2vw;
   border-radius: 1vw;
   padding: 1vw;
@@ -115,22 +116,21 @@
 }
 
 .product-box {
-  background-color: white;
-  border-radius: 1vw;
-  padding: 1vw;
-  box-sizing: border-box;
+  aspect-ratio: 1;
+  position: relative;
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
-  width: 100%;
-  height: 100%;
-  position: relative;
+  border-radius: 1vw;
+  padding: 1vw;
+  background-color: white;
 }
 
 .product-box p {
-  font-size: 1.1vw;
+  font-size: 1vw;
   font-weight: bold;
   text-align: center;
 }
@@ -202,21 +202,22 @@
 
 #buy-notification-container {
   position: fixed;
-  top: 12vh;
+  top: 11vh;
   right: 5vh;
   z-index: 9;
   display: flex;
   align-items: end;
   justify-content: center;
   width: 6vw;
-  height: 15vh;
+  height: 20vw;
   overflow: hidden;
   pointer-events: none;
 }
 
 #buy-notification-container .buy-notification {
   width: 80%;
-  
+  position: absolute;
+  bottom: 0;
   animation: buyNotificationAnim 2s ease-in-out forwards;
 }
 
@@ -264,7 +265,8 @@
 
 #my-packs-title {
   font-family: var(--font-title-1);
-  font-size: 4vw;
+  font-size: 3rem;
+  margin: 0;
 }
 
 #my-packs-grid {
@@ -314,11 +316,13 @@
 }
 #open-pack-modal {
   position: fixed;
+  top: 0;
   width: 100vw;
   height: 100vh;
   background-color: rgba(255, 255, 255, 0.9);
-  padding: 2vw;
+  padding: 7vh 2vw 2vw 2vw;
   box-sizing: border-box;
+  overflow: scroll;
 }
 
 #open-pack-panel {
@@ -362,6 +366,7 @@
 }
 #obtained-cards-container {
   width: 100%;
+  height: 60%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -369,9 +374,10 @@
 }
 #obtained-cards-container .obtained-card {
   position: absolute;
-  max-height: 40vh;
+  top: 0;
+  max-height: 100%;
   max-width: 100%;
-  border-radius: 2vw;
+  border-radius: 1vw;
   object-fit: scale-down;
 }
 #show-cards-panel #next-card-button {
@@ -384,15 +390,54 @@
 /* Show all cards */
 #all-cards-obtained-panel {
   width: 100%;
-
+  height: 100%;
   display: grid;
   justify-content: center;
   align-items: center;
-  grid-template-columns: repeat(auto-fit, 20vw);
-  grid-template-rows: repeat(auto-fit);
+  grid-template-columns: repeat(5, auto);
+  grid-template-rows: 30% 30% 10%;
   gap: 2vw;
+  box-sizing: border-box;
+
 }
 #all-cards-obtained-panel img {
-  width: 100%;
+  height: 100%;
   border-radius: 1vw;
+}
+
+#close-obtained-button{
+  grid-column-start: 5;
+}
+@media (max-height: 600px)
+{
+  #shop-top-panel.top-panel {
+    height: 100vh;
+  }
+  #shop-top-panel #example-card-1 {
+    transform: translateX(min(15vw, 15rem)) translateY(60%) rotateZ(10deg);
+    z-index: 2;
+  }
+  
+  #shop-top-panel #example-card-2 {
+    transform: translateX(0) translateY(60%) rotateZ(0);
+    z-index: 4;
+  }
+  
+  #shop-top-panel #example-card-3 {
+    transform: translateX(max(-15rem, -15vw )) translateY(60%) rotateZ(-10deg);
+    z-index: 2;
+  }
+  
+  #shop-top-panel #example-card-4 {
+    transform: translateX(min(35vw, 35rem)) translateY(30%) rotateZ(10deg);
+    z-index: 1;
+  }
+  
+  #shop-top-panel #example-card-5 {
+    transform: translateX(max(-35rem, -35vw)) translateY(30%) rotateZ(-10deg);
+  
+    z-index: 1;
+  }
+
+
 }

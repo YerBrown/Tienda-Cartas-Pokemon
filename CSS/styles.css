@@ -49,8 +49,7 @@ header,
 footer {
   width: 100vw;
   box-sizing: border-box;
-  overflow: scroll;
-  background-color: var(--color-6);
+  background-color:  #2d2d2d;;
   color: var(--color-5);
 }
 
@@ -64,9 +63,10 @@ header {
   left: 0;
   z-index: 20;
   height: 5vh;
-  min-height: 50px;
   gap: 20px;
-  padding: 10px 20px;
+  padding: 2vh;
+  font-size: clamp(0.25rem, 2.5vw, 1rem);
+  
 }
 
 header #page-title {
@@ -79,6 +79,7 @@ header #page-title {
 header h3 {
   font-family: var(--font-title-1);
   margin: 0;
+  font-size: clamp(0.5rem, 3vw, 1.2rem);
 }
 
 header img {
@@ -128,13 +129,14 @@ main {
   justify-content: center;
   align-items: center;
   background-color: var(--color-5);
-  padding-top: max(5vh, 50px);
+  padding-top: 5vh;
 }
 
 h1 {
   font-family: var(--font-title-1);
   font-size: 4vw;
 }
+
 
 footer {
   bottom: 0;
@@ -261,20 +263,26 @@ select {
 
 .top-panel{
   display: flex;
-  /* background-color: rgba(0, 0, 0, 0.5); */
   position: relative;
-  background-repeat: repeat();
-  background-size: 50vw 50vw;
-  background-position: center;
   height: 30vw;
+  max-height: 40vh;
   width: 100%;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  color: #2d2d2d;
 }
 .disabled{
   display: none;
 }
-@media (max-height: 700px) {
-  
+@media (max-width: 900px) {
+  header{
+    position: relative;
+    flex-direction: column;
+    height: auto;
+    z-index: 0;
+  }
+  menu{
+
+  }
 }

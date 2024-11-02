@@ -1,5 +1,9 @@
 import Menu from "./menu.js";
-import { createHTMLElement, createImgElement, loadImagesBeforRendering } from "../codigo.js";
+import {
+  createHTMLElement,
+  createImgElement,
+  loadImagesBeforRendering,
+} from "../codigo.js";
 import CardList from "./cardList.js";
 import { getSetById, getCardsBySet } from "../apiCallController.js";
 import { allProducts, getProductsSets } from "../completeProductList.js";
@@ -89,7 +93,7 @@ class PokemonSetsMenu extends Menu {
     return setInfoContainer;
   }
   createTopPanel() {
-    const topPanel = createHTMLElement("div", "set-top-panel",  ['top-panel']);
+    const topPanel = createHTMLElement("div", "set-top-panel", ["top-panel"]);
 
     const shopTitle = createHTMLElement("h1", "set-menu-title");
     shopTitle.innerText = "Pokémon Sets Collection";
@@ -277,7 +281,12 @@ class PokemonSetsMenu extends Menu {
       "selectable",
     ]);
     const newLogoImg = createImgElement(setData.images.logo);
-    newSetLogo.appendChild(newLogoImg);
+    const currentCardsText = createHTMLElement("p", "", ["set-cards"]);
+    currentCardsText.innerText =
+      userDataBase.getAmountOfCardBySet(setData.id) +
+      " / " +
+      setData.total;
+    newSetLogo.append(newLogoImg, currentCardsText);
     newSetLogo.href = "#pokemon-set-info";
     newSetLogo.addEventListener("click", () => {
       this.openSetInfoPanel(setData);
