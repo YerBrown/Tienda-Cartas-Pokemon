@@ -231,7 +231,7 @@ class PokemonSetsMenu extends Menu {
     for (const setData of resultados) {
       this.allSetsData.push(setData.data[0]);
     }
-    console.log(this.allSetsData);
+
     // Cargar las imagenes antes de cargar
     const imagesUrl = [];
     for (const set of this.allSetsData) {

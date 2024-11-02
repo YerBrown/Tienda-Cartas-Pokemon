@@ -28,7 +28,7 @@ class CombatMenu extends Menu {
   loadMenu() {
     super.loadMenu();
     this.openSelectCombatSubmenu();
-    this.openSelectCardsSubmenu();
+    // this.openSelectCardsSubmenu();
   }
   createSelectCombatSubmenu() {
     this.selectCombatSubmenu = createHTMLElement(
