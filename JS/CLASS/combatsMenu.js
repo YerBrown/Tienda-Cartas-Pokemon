@@ -2,10 +2,11 @@ import {
   createHTMLElement,
   createImgElement,
   loadImagesBeforRendering,
-  capitalizeWords
+  capitalizeWords,
 } from "../codigo.js";
-import { dataBase,userDataBase } from "../mainPageController.js";
-import Menu from "/JS/CLASS/menu.js";
+import { dataBase, userDataBase } from "../mainPageController.js";
+import Menu from "./menu.js";
+import Combat from "./combat.js";
 class CombatMenu extends Menu {
   constructor(parentId) {
     super(parentId);
@@ -17,18 +18,18 @@ class CombatMenu extends Menu {
     this.pageSize = 20;
     this.elementFilter = [];
     this.setFilter = [];
+    this.currentCombat = new Combat(this);
+    this.createCombatSubmenu();
   }
   createMenu() {
     const menu = createHTMLElement("div", "combats-menu", ["menu"]);
     this.createSelectCombatSubmenu();
     this.createSelectCardsSubmenu();
-    // this.createCombatSubmenu();
     return menu;
   }
   loadMenu() {
     super.loadMenu();
     this.openSelectCombatSubmenu();
-    // this.openSelectCardsSubmenu();
   }
   createSelectCombatSubmenu() {
     this.selectCombatSubmenu = createHTMLElement(
@@ -79,11 +80,25 @@ class CombatMenu extends Menu {
       "In Pokémon battles, each trainer chooses a team of 6 Pokémon, selecting the order in which they will fight. Once the selection is complete and the battle begins, the Pokémon automatically handle the combat without needing further commands. The owner of the winning Pokémon will take possession of the defeated Pokémon from their opponent.";
     this.cardSlotsContainer = createHTMLElement("div", "card-slots-container");
 
-    this.startCombatButton = createHTMLElement('button', 'start-combat-button', ['disabled-button']);
-    this.startCombatButton.innerHTML = 'Start Combat';
-
-    this.selectCardsSubmenu.append(explanationText, this.cardSlotsContainer, this.startCombatButton);
+    this.startCombatButton = createHTMLElement(
+      "button",
+      "start-combat-button",
+      ["disabled-button"]
+    );
+    this.startCombatButton.innerHTML = "Start Combat";
+    this.startCombatButton.addEventListener("click", () => {
+      this.openCombatSubmenu();
+    });
+    this.selectCardsSubmenu.append(
+      explanationText,
+      this.cardSlotsContainer,
+      this.startCombatButton
+    );
     this.createSelectCardModal();
+  }
+  createCombatSubmenu() {
+    this.combatSubmenu = createHTMLElement("div", "combat-submenu");
+    this.combatSubmenu.appendChild(this.currentCombat.combatwindow);
   }
   updateCardSlotsPanel() {
     // Resetear la lista de cartas de combate
@@ -113,10 +128,12 @@ class CombatMenu extends Menu {
       this.cardSlotsContainer.appendChild(newSlot);
     }
     // comprobar si todos los huecos estan llenos
-    if (this.selectedCards.filter((card) => card != null).length == this.cardSlots) {
-        this.startCombatButton.classList.remove('disabled-button');
-    }else if(!this.startCombatButton.classList.contains('disabled-button')){
-        this.startCombatButton.classList.add('disabled-button');
+    if (
+      this.selectedCards.filter((card) => card != null).length == this.cardSlots
+    ) {
+      this.startCombatButton.classList.remove("disabled-button");
+    } else if (!this.startCombatButton.classList.contains("disabled-button")) {
+      this.startCombatButton.classList.add("disabled-button");
     }
   }
   openSelectCombatSubmenu() {
@@ -128,6 +145,11 @@ class CombatMenu extends Menu {
     this.mainNode.innerHTML = "";
     this.updateCardSlotsPanel();
     this.mainNode.appendChild(this.selectCardsSubmenu);
+  }
+  openCombatSubmenu() {
+    this.mainNode.innerHTML = "";
+    this.mainNode.appendChild(this.combatSubmenu);
+    this.currentCombat.sendPlayerteam(this.selectedCards);
   }
   createSelectCardModal() {
     this.selectCardModal = createHTMLElement("div", "select-card-modal");
@@ -166,7 +188,7 @@ class CombatMenu extends Menu {
   }
   createMyCollectionPanel() {
     const myCollectionPanel = createHTMLElement("div", "my-collection-panel");
-    
+
     const showCollectionPanel = createHTMLElement("div", "collection-panel");
     this.topPagePanel = this.createCollectionChangePagePanel();
     this.bottomPagePanel = this.createCollectionChangePagePanel();
@@ -181,24 +203,28 @@ class CombatMenu extends Menu {
       this.bottomPagePanel
     );
 
-    myCollectionPanel.append( showCollectionPanel);
+    myCollectionPanel.append(showCollectionPanel);
     return myCollectionPanel;
   }
-  createElementFilterPanel(){
-    const elementFilterPanel = createHTMLElement("div", "element-filters-panel");
-    const filterTitle = createHTMLElement('h4');
-    filterTitle.innerHTML = 'Elements:'
+  createElementFilterPanel() {
+    const elementFilterPanel = createHTMLElement(
+      "div",
+      "element-filters-panel"
+    );
+    const filterTitle = createHTMLElement("h4");
+    filterTitle.innerHTML = "Elements:";
     elementFilterPanel.appendChild(filterTitle);
-    const allElements = dataBase.types.data;
+    const allElements = dataBase.types;
     for (const element of allElements) {
-        const newElementFilter = this.createInputCheckbox('element', element, capitalizeWords(element));
-        elementFilterPanel.appendChild(newElementFilter);
+      const newElementFilter = this.createInputCheckbox(
+        "element",
+        element.id,
+        capitalizeWords(element.id)
+      );
+      elementFilterPanel.appendChild(newElementFilter);
     }
 
-
-
-
-    return elementFilterPanel
+    return elementFilterPanel;
   }
   createInputCheckbox(inputName, inputValue, labelText) {
     const newInput = createHTMLElement("div", "", ["filter-input-container"]);
@@ -216,12 +242,11 @@ class CombatMenu extends Menu {
       this.currentPage = 1;
       if (inputName == "element") {
         if (this.elementFilter.includes(inputValue)) {
-            this.elementFilter =
-            this.elementFilter.filter(
-              (productType) => productType != inputValue
-            );
+          this.elementFilter = this.elementFilter.filter(
+            (productType) => productType != inputValue
+          );
         } else {
-            this.elementFilter.push(inputValue);
+          this.elementFilter.push(inputValue);
         }
       }
       this.updateMyCollectionPanel();

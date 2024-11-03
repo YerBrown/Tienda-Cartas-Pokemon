@@ -2,7 +2,7 @@ import PokemonSetsMenu from "./CLASS/pokemonSetsMenu.js";
 import Nav from "./CLASS/nav.js";
 import { createHTMLElement } from "./codigo.js";
 import ShopMenu from "./CLASS/shopMenu.js";
-import CombatMenu from "./CLASS/combats.js";
+import CombatMenu from "./CLASS/combatsMenu.js";
 import CardsDataBase from "./CLASS/cardsDataBaseClass.js";
 import UserDataBase from "./CLASS/userDataBase.js";
 

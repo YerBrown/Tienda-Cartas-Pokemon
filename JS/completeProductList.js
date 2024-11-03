@@ -45,6 +45,10 @@ export function getProductsSets() {
 
   return setsInProducts;
 }
+export function getRandomSetOfProducts(){
+  const randomNumber = Math.floor(Math.random() * getProductsSets().length);
+  return getProductsSets()[randomNumber];
+}
 export function addAllProducts() {
   allProducts = [];
   addProductsBySet("png", "sv7", 4, 0, 1, 0, 0);

@@ -24,10 +24,17 @@ class CardsDataBase {
     promesas.push(this.saveSets());
 
     await Promise.all(promesas);
-    console.log(this);
   }
   async saveTypes() {
-    this.types = await getTypes();
+    const typesList = await getTypes();
+    this.types = [];
+    for (const type of typesList.data) {
+      const newTypeObject = {
+        id: type,
+        image: `/ASSETS/images/elements/${type}.png`,
+      };
+      this.types.push(newTypeObject);
+    }
   }
   async saveSubtypes() {
     this.subTypes = await getSubTypes();
@@ -42,22 +49,28 @@ class CardsDataBase {
     const setResponse = await getAllSets();
     const setWithCollectionKey = setResponse.data;
     for (const set of setWithCollectionKey) {
-      set.collection = []
+      set.collection = [];
     }
     this.sets = setWithCollectionKey;
   }
   async getCardsOfSetById(setId) {
     const currentSet = this.sets.find((set) => set.id == setId);
-    console.log(currentSet);
     if (currentSet.collection.length <= 0) {
       await this.addCardsList(setId);
     }
-    console.log(currentSet)
     return currentSet.collection;
   }
-  getRandomCardOfSet(setId){
+  getRandomCardOfSet(setId) {
     const set = this.getSetById(setId);
     const randomNumber = Math.floor(Math.random() * set.collection.length);
+    return set.collection[randomNumber];
+  }
+  getRandomPokemonCardOfSet(setId) {
+    const set = this.getSetById(setId);
+    let randomNumber = Math.floor(Math.random() * set.collection.length);
+    while (set.collection[randomNumber].supertype != "Pokémon"){
+      randomNumber = Math.floor(Math.random() * set.collection.length);
+    }
     return set.collection[randomNumber];
   }
   async addCardsList(setId) {
@@ -70,6 +83,13 @@ class CardsDataBase {
       return this.sets.find((set) => set.id == id);
     }
     return "default";
+  }
+  getRandomSet(){
+    let randomNumber = Math.floor(Math.random() * this.sets.length);
+    return this.sets[randomNumber];
+  }
+  getTypeById(id) {
+    return this.types.find((type) => type.id == id);
   }
 }
 export default CardsDataBase;
