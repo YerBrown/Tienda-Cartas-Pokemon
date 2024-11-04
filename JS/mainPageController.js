@@ -22,7 +22,14 @@ function loadMain() {
   const main = createHTMLElement("main", "parent");
   document.body.appendChild(main);
 }
-function loadFooter() {}
+function loadFooter() {
+  const footer = createHTMLElement("footer");
+  const pageText = createHTMLElement("p");
+  pageText.innerText =
+    "Disclaimer: This page is not an official website of Nintendo. It is independently created and is not affiliated with, authorized, or endorsed by Nintendo in any way.";
+    footer.appendChild(pageText);
+  document.body.appendChild(footer);
+}
 async function initialice() {
   document.body.innerHTML = "";
   // Añadir estructura base
@@ -35,7 +42,7 @@ async function initialice() {
   shopMenu = new ShopMenu(parentId);
   combatsMenu = new CombatMenu(parentId);
   //Cargar menu
-  loadCombatsMenu();
+  loadSetsMenu();
 }
 // Prueba cargar menus
 export function loadSetsMenu() {

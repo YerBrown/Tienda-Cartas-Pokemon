@@ -13,8 +13,7 @@
 
 @font-face {
   font-family: "Half Awake";
-  src: url("/ASSETS/fonts/half_awake/Half Awake Trial-SVG.otf")
-    format("opentype");
+  src: url("/ASSETS/fonts/half_awake/Half Awake Trial-SVG.otf") format("opentype");
 }
 
 @font-face {
@@ -34,8 +33,7 @@
 
 @font-face {
   font-family: "Made Tommy";
-  src: url("/ASSETS/fonts/made_tommy/MADE\ TOMMY\ Regular_PERSONAL\ USE.otf")
-    format("truetype");
+  src: url("/ASSETS/fonts/made_tommy/MADE\ TOMMY\ Regular_PERSONAL\ USE.otf") format("truetype");
 }
 
 body,
@@ -107,6 +105,50 @@ header a {
 
 header a:hover {
   text-decoration: underline;
+}
+
+footer {
+  padding: 1vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+footer p {
+  font-size: .8vw;
+  color: #535353;
+}
+#coins-notification-container {
+  position: absolute;
+  top: 0;
+  right: 5vh;
+  width: 20vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+#coins-notification-container p {
+  margin: 0;
+  color: black;
+  animation: addIcons 1s ease forwards;
+  z-index: 10;
+}
+
+@keyframes addIcons {
+  0% {
+    color: transparent;
+    transform: translateY(7vh);
+  }
+  
+  50% {
+    color: black
+  }
+  
+  100% {
+    color: transparent;
+    transform: translateY(0);
+  }
 }
 
 #coins-panel {
@@ -260,10 +302,12 @@ select {
   color: white;
   font-size: 1.2vw;
 }
+
 #change-page-buttons button {
   font-size: 1vw;
   padding: 1vw;
 }
+
 #change-page-buttons a:hover {
   color: rgb(55, 55, 55);
 }
@@ -284,9 +328,11 @@ select {
   overflow: hidden;
   color: #2d2d2d;
 }
-.top-panel h1{
+
+.top-panel h1 {
   font-size: 2.5vw;
 }
+
 .disabled {
   display: none;
 }
@@ -295,6 +341,7 @@ select {
   width: 100%;
   height: 100%;
 }
+
 @media (max-width: 900px) {
   header {
     position: relative;
@@ -304,6 +351,7 @@ select {
   }
 
 }
+
 @media (min-width: 901px) {
   .menu {
     padding: 2vh 10vw;

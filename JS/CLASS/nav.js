@@ -12,7 +12,7 @@ class Nav {
     this.header = createHTMLElement("header");
     const pageTitle = createHTMLElement("div", "page-title");
     const titleText = createHTMLElement("h3");
-    titleText.innerText = "Pokémon Card Store";
+    titleText.innerText = "Pokémon TCG Dealer";
     const titleIcon = createImgElement(
       "../ASSETS/images/pokeball.png",
       "page icon"
@@ -53,7 +53,7 @@ class Nav {
 
     const coinsContainer = createHTMLElement("div", "coins-panel");
     this.coinsText = createHTMLElement("p", "coins-text");
-    this.coinsText.innerText = '999999'
+    this.coinsText.innerText = "999999";
     const coinsIcon = createImgElement(
       "../ASSETS/images/moneda-de-dolar.png",
       "coins icon"
@@ -69,8 +69,24 @@ class Nav {
     }
     document.body.appendChild(this.header);
   }
-  updateCoinsText(newCoinsAmount){
-    this.coinsText.innerText = newCoinsAmount
+  updateCoinsText(newCoinsAmount) {
+    this.coinsText.innerText = newCoinsAmount;
+  }
+  addCoinsAnim(amount) {
+    this.notificationContainer = document.getElementById(
+      "coins-notification-container"
+    );
+    if (!this.notificationContainer) {
+      this.notificationContainer = createHTMLElement(
+        "div",
+        "coins-notification-container"
+      );
+      this.header.appendChild(this.notificationContainer);
+    }
+    this.notificationContainer.innerHTML = "";
+    const amountText = createHTMLElement("p");
+    amountText.innerText = "+" + amount;
+    this.notificationContainer.appendChild(amountText);
   }
 }
 export default Nav;

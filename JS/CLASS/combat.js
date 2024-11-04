@@ -31,17 +31,30 @@ class Combat {
     this.createTeamCards(this.opponentTeam, this.opponentCards);
 
     this.combatField = createHTMLElement("div", "combat-field");
-    combatWindow.append(this.playerCards, this.combatField, this.opponentCards);
+
+    this.skipCombatButton = createHTMLElement("button", "skip-button");
+    this.skipCombatButton.innerText = "Skip Combats";
+    this.skipCombatButton.addEventListener("click", () => {
+      this.skip = true;
+    });
+    combatWindow.append(
+      this.playerCards,
+      this.combatField,
+      this.opponentCards,
+      this.skipCombatButton
+    );
     return combatWindow;
   }
   async sendPlayerteam(playerTeam = null) {
-      await this.loadOpponentTeam();
+    this.combatMenu.combatSubmenu.innerHTML = "";
+    await this.loadOpponentTeam();
     if (playerTeam != null) {
-        this.playerTeam = playerTeam;
-    }else{
-        this.playerTeam = await this.loadOpponentTeam();
+      this.playerTeam = playerTeam;
+    } else {
+      this.playerTeam = await this.loadOpponentTeam();
     }
     this.loadCombatWindow(this.playerTeam, this.opponentTeam);
+    this.combatMenu.combatSubmenu.appendChild(this.combatwindow);
   }
   async loadCombatWindow(playerTeam, opponentTeam) {
     this.playerFightWon = [];
@@ -71,12 +84,14 @@ class Combat {
     this.createTeamCards(this.opponentTeam, this.opponentCards);
   }
   async startCombat() {
+    this.skip = false;
     await this.setPokemonsInField(this.playerTeam[0], this.opponentTeam[0]);
     await this.setPokemonsInField(this.playerTeam[1], this.opponentTeam[1]);
     await this.setPokemonsInField(this.playerTeam[2], this.opponentTeam[2]);
     await this.setPokemonsInField(this.playerTeam[3], this.opponentTeam[3]);
     await this.setPokemonsInField(this.playerTeam[4], this.opponentTeam[4]);
     await this.setPokemonsInField(this.playerTeam[5], this.opponentTeam[5]);
+    this.openCombatResults();
   }
   async setPokemonsInField(playerCard, opponentCard) {
     const playerFighter = this.createFighterElement(playerCard);
@@ -220,8 +235,72 @@ class Combat {
       }
     }
   }
+  openCombatResults() {
+    this.combatMenu.combatSubmenu.innerHTML = "";
+    const obtainedCards = [];
+    const lostCards = [];
+
+    for (let i = 0; i < this.playerFightWon.length; i++) {
+      if (this.playerFightWon[i] == true) {
+        obtainedCards.push(this.opponentTeam[i]);
+      } else {
+        lostCards.push(this.playerTeam[i]);
+      }
+    }
+
+    const combatResultsParent = createHTMLElement(
+      "div",
+      "combat-results-panel"
+    );
+    const resultsText = createHTMLElement("h3");
+    resultsText.innerText = "Combats Results";
+    const closeButton = createHTMLElement("button", "", ["close-button"]);
+    closeButton.innerText = "Close";
+    closeButton.addEventListener("click", () => {
+      this.combatMenu.openSelectCardsSubmenu();
+    });
+
+    const obtainedText = createHTMLElement("h4");
+    obtainedText.innerText = "Obtained Pokemon";
+    const pokemonObtained = createHTMLElement("div", "pokemon-obtained");
+    for (const card of obtainedCards) {
+      const newCard = createImgElement(
+        card.images.large,
+        "card of " + card.name
+      );
+      pokemonObtained.appendChild(newCard);
+    }
+    pokemonObtained.appendChild(obtainedText);
+    const lostText = createHTMLElement("h4");
+    lostText.innerText = "Lost Pokemon";
+    const pokemonLost = createHTMLElement("div", "pokemon-lost");
+    for (const card of lostCards) {
+      const newCard = createImgElement(
+        card.images.large,
+        "card of " + card.name
+      );
+      pokemonLost.appendChild(newCard);
+    }
+    pokemonLost.appendChild(lostText);
+    combatResultsParent.append(
+      resultsText,
+      pokemonObtained,
+      pokemonLost,
+      closeButton
+    );
+    this.combatMenu.combatSubmenu.appendChild(combatResultsParent);
+
+    // Añadir los ganados y quitar los perdidos
+    userDataBase.addCardsToCollection(obtainedCards);
+    userDataBase.removeCardsOfCollection(lostCards);
+    userDataBase.addCoins(50 * obtainedCards.length);
+  }
   async esperar(segundos) {
-    return new Promise((resolve) => setTimeout(resolve, segundos * 1000));
+    if (this.skip == false) {
+      return new Promise((resolve) => setTimeout(resolve, segundos * 1000));
+    } else {
+      return;
+    }
   }
 }
 class Pokemon {
@@ -271,7 +350,17 @@ class Pokemon {
     let posibleAttack = null;
     for (const attack of this.attacks) {
       if (attack.convertedEnergyCost <= this.energies) {
-        posibleAttack = attack;
+        let damageStr = attack.damage.replace(/\D/g, "");
+        let calculatedDamage = Number(damageStr);
+        if (posibleAttack) {
+          let posibleDamageStr = posibleAttack.damage.replace(/\D/g, "");
+          let calculatedPosibleDamage = Number(posibleDamageStr);
+          if (calculatedDamage > calculatedPosibleDamage) {
+            posibleAttack = attack;
+          }
+        } else {
+          posibleAttack = attack;
+        }
       }
     }
     return posibleAttack;
@@ -290,7 +379,6 @@ class Pokemon {
   }
   receiveDamage(attack, attackElement) {
     let damageStr = attack.damage.replace(/\D/g, "");
-    console.log(attack.damage);
     let calculatedDamage = Number(damageStr);
     // Calcular devilidades y resistencias
     if (this.weakness && attackElement == this.weakness.type) {

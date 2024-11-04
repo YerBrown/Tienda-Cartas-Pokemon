@@ -5,7 +5,7 @@ class UserDataBase {
     this.lastSaveDate = new Date();
     this.collection = [];
     this.packs = [];
-    this.winCoinsCooldown = 1000 * 60;
+    this.winCoinsCooldown = 1000 * 30;
     this.winAmount = 100;
     this.updateUserData();
     this.checkTimeBetweenSaves();
@@ -18,6 +18,7 @@ class UserDataBase {
       this.collection = localStorageData.collection;
       this.packs = localStorageData.packs;
     }
+    this.updateCoins(this.coins);
   }
   getLocalStorageData() {
     const userString = localStorage.getItem("userData");
@@ -35,7 +36,9 @@ class UserDataBase {
       differenceInMilliseconds / this.winCoinsCooldown
     );
     console.log(addCoinsRemaining);
-    this.addCoins(this.coins + addCoinsRemaining * this.winAmount);
+    if (addCoinsRemaining > 0) {
+      this.addCoins(addCoinsRemaining * this.winAmount);
+    }
     setTimeout(() => {
       this.winCoins();
     }, this.winCoinsCooldown);
@@ -43,7 +46,7 @@ class UserDataBase {
   addCardsToCollection(cards) {
     for (const card of cards) {
       const newCard = { card: card, amount: 1 };
-      const currentCard = this.getCardById(card);
+      const currentCard = this.getCardById(card.id);
       if (currentCard) {
         if (currentCard.amount >= 4) {
           this.updateCoins(this.coins + 30);
@@ -56,14 +59,18 @@ class UserDataBase {
     }
     this.saveLocalStorageData();
   }
-  removeCardsOfCollection(id, amount) {
+  removeCardsOfCollection(cards) {
+    for (const card of cards) {
+      this.removeCardOfCollection(card.id, 1);
+    }
+  }
+  removeCardOfCollection(id, amount) {
     const removedCard = this.getCardById(id);
     if (removedCard) {
-      if (removedCard.amount <= amount) {
+      removedCard.amount -= amount;
+      if (removedCard.amount <= 0) {
         const cardIndex = this.collection.indexOf(removedCard);
         this.collection.splice(cardIndex, 1);
-      } else {
-        removedCard.amount -= amount;
       }
     }
     this.saveLocalStorageData();
@@ -73,10 +80,12 @@ class UserDataBase {
     const coinsObtained = 30;
 
     this.updateCoins(this.coins + coinsObtained);
-    this.removeCardsOfCollection(id, 1);
+    this.removeCardOfCollection(id, 1);
   }
   getCardById(id) {
-    const findedCard = this.collection.find((card) => card.id == id);
+    const findedCard = this.collection.find(
+      (cardObject) => cardObject.card.id == id
+    );
     return findedCard;
   }
   addPacks(pack, set, amount) {
@@ -117,6 +126,7 @@ class UserDataBase {
     this.updateCoins(this.coins - amountRemoved);
   }
   addCoins(amountAdded) {
+    navBar.addCoinsAnim(amountAdded);
     this.updateCoins(this.coins + amountAdded);
   }
   updateCoins(newCoinsValue) {

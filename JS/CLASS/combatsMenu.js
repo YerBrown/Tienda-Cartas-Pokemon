@@ -15,7 +15,7 @@ class CombatMenu extends Menu {
     this.currentIndex = 0;
     this.currentPage = 1;
     this.totalPages = 1;
-    this.pageSize = 20;
+    this.pageSize = 18;
     this.elementFilter = [];
     this.setFilter = [];
     this.currentCombat = new Combat(this);
@@ -23,57 +23,19 @@ class CombatMenu extends Menu {
   }
   createMenu() {
     const menu = createHTMLElement("div", "combats-menu", ["menu"]);
-    this.createSelectCombatSubmenu();
     this.createSelectCardsSubmenu();
     return menu;
   }
   loadMenu() {
     super.loadMenu();
-    this.openSelectCombatSubmenu();
+    this.openSelectCardsSubmenu();
   }
-  createSelectCombatSubmenu() {
-    this.selectCombatSubmenu = createHTMLElement(
-      "div",
-      "select-combat-submenu"
-    );
+  createSelectCardsSubmenu() {
+    this.selectCardsSubmenu = createHTMLElement("div", "select-combat-submenu");
     const topPanel = createHTMLElement("div", "", ["top-panel"]);
     const menuTitle = createHTMLElement("h1");
     menuTitle.innerText = "Pokémon Combats";
     topPanel.appendChild(menuTitle);
-    const selectCombatModePanel = createHTMLElement(
-      "div",
-      "select-combat-panel"
-    );
-    const multiplayer = createHTMLElement("div", "multiplayer-option");
-    const multiplayerText = createHTMLElement("h3");
-    multiplayerText.innerText = "Mutiplayer Mode";
-    const multiplayerButton = createHTMLElement("button", "mutiplayer-button");
-    multiplayerButton.innerText = "Play VS Player";
-    const coomingSoonFilter = createHTMLElement("div", "coomingsoon-filter");
-    const coomingSoonText = createHTMLElement("h4");
-    coomingSoonText.innerText = "Cooming Soon";
-    coomingSoonFilter.appendChild(coomingSoonText);
-    multiplayer.append(multiplayerText, multiplayerButton, coomingSoonFilter);
-
-    const singlePLayer = createHTMLElement("div", "singleplayer-option");
-    const singleplayerText = createHTMLElement("h3");
-    singleplayerText.innerText = "Singleplayer Mode";
-    const singleplayerButton = createHTMLElement(
-      "button",
-      "singleplayer-button"
-    );
-    singleplayerButton.innerText = "Play VS AI";
-    singlePLayer.addEventListener("click", () => {
-      this.openSelectCardsSubmenu();
-    });
-    singlePLayer.append(singleplayerText, singleplayerButton);
-
-    selectCombatModePanel.append(multiplayer, singlePLayer);
-
-    this.selectCombatSubmenu.append(topPanel, selectCombatModePanel);
-  }
-  createSelectCardsSubmenu() {
-    this.selectCardsSubmenu = createHTMLElement("div", "select-combat-submenu");
 
     const explanationText = createHTMLElement("p");
     explanationText.innerText =
@@ -87,9 +49,15 @@ class CombatMenu extends Menu {
     );
     this.startCombatButton.innerHTML = "Start Combat";
     this.startCombatButton.addEventListener("click", () => {
-      this.openCombatSubmenu();
+      if (
+        this.selectedCards.filter((card) => card != null).length ==
+        this.cardSlots
+      ) {
+        this.openCombatSubmenu();
+      }
     });
     this.selectCardsSubmenu.append(
+      topPanel,
       explanationText,
       this.cardSlotsContainer,
       this.startCombatButton
@@ -98,7 +66,6 @@ class CombatMenu extends Menu {
   }
   createCombatSubmenu() {
     this.combatSubmenu = createHTMLElement("div", "combat-submenu");
-    this.combatSubmenu.appendChild(this.currentCombat.combatwindow);
   }
   updateCardSlotsPanel() {
     // Resetear la lista de cartas de combate
@@ -142,6 +109,7 @@ class CombatMenu extends Menu {
     this.selectedCards = [];
   }
   openSelectCardsSubmenu() {
+    this.selectedCards = [];
     this.mainNode.innerHTML = "";
     this.updateCardSlotsPanel();
     this.mainNode.appendChild(this.selectCardsSubmenu);

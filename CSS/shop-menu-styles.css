@@ -373,7 +373,7 @@
   align-items: center;
 }
 #obtained-cards-container {
-  width: 100%;
+  width: 60%;
   height: 60%;
   position: relative;
   display: flex;

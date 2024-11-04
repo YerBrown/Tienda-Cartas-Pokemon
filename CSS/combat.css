@@ -1,3 +1,12 @@
+#combat-submenu {
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  height: 90vh;
+  border-radius: 1vw;
+  overflow: hidden;
+  outline: 3px solid black;
+}
+
 #combat-window {
   position: relative;
   width: 100%;
@@ -17,11 +26,13 @@
   align-items: center;
   gap: 2%;
 }
+
 #player-team {
   bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
 }
+
 #opponent-team {
   top: 2%;
   left: 50%;
@@ -33,10 +44,12 @@
   max-width: 100%;
   justify-self: center;
 }
+
 #player-team .team-card.selectable:hover {
   transform: scale(1.3) translateY(-15%);
   z-index: 1;
 }
+
 #opponent-team .team-card.selectable:hover {
   transform: scale(1.3) translateY(15%);
   z-index: 1;
@@ -62,118 +75,193 @@
   font-size: 200%;
   text-align: center;
 }
+
 .fighter {
   position: relative;
-  width: 100%;
+  max-width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
 }
+
 .fighter img {
   height: 100%;
   max-width: 100%;
   object-fit: contain;
 }
+
 .fighter-hp-panel {
   font-weight: bold;
-  font-size: 150%;
-  width: 50%;
-}
-#player-fighter .fighter-hp-panel {
+  font-size: 100%;
+  width: 35%;
+  height: 10%;
   position: absolute;
-  top: 0;
-  left: 110%;
-  text-align: start;
-}
-#opponent-fighter .fighter-hp-panel {
-  position: absolute;
-  top: 0;
-  right: 110%;
+  top: 3%;
+  right: 5%;
   text-align: end;
+  background-color: white;
+  box-sizing: border-box;
+  border: 2px solid black;
+
+}
+
+.fighter-hp-panel p {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .energies-container {
   position: absolute;
-  height: 100%;
-  width: 10%;
-}
-#player-fighter .energies-container {
   top: 20%;
-  left: 110%;
-}
-#opponent-fighter .energies-container {
-  top: 20%;
-  right: 110%;
-}
-.energies-container {
+  right: -5%;
   display: flex;
   flex-direction: column;
   justify-content: start;
-  gap: 2%;
+  gap: 2px;
+  width: 15%;
 }
+
+
 .energies-container .energy-icon {
   height: auto;
   width: auto;
   animation: crecer 0.5s ease-in-out forwards;
 }
+
 .damage-text {
-  color: transparent;
+  display: none;
   position: absolute;
-  top: 0;
-  font-size: 150%;
+  top: 3%;
+  right: 0;
+  font-size: 100%;
   font-weight: bold;
-  background-color: transparent;
   padding: 2%;
   border-radius: 100%;
-}
-#player-fighter .damage-text {
-  right: 0;
-}
-#opponent-fighte .damage-text {
-  left: 0;
-}
-.show-damage {
+  text-align: start;
   background-color: white;
-  color: black;
+  margin: 0;
+}
+
+.show-damage {
+  display: inline-block;
   animation: crecer 0.5s ease-in-out forwards;
   border: 2px solid black;
 }
+
 .attack {
   animation: vibrar 0.5s ease-in-out forwards;
 }
+
 .hit {
   filter: sepia(1) saturate(10) hue-rotate(-50deg);
   animation: parpadeo 0.5s ease-in-out forwards;
 }
 
 .fight-won {
-  outline: 5px solid green;
+  outline: 5px solid rgb(167, 255, 167);
   border-radius: 0.5vw;
 }
+
 .fight-lost {
-  outline: 5px solid red;
+  outline: 5px solid rgb(255, 125, 125);
   border-radius: 0.5vw;
+}
+
+#combat-window #skip-button {
+  position: absolute;
+  right: 5%;
+  bottom: 50%;
+  transform: translateY(50%);
+}
+
+/* Results panel */
+#combat-results-panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5%;
+  box-sizing: border-box;
+}
+
+#combat-results-panel h3 {
+  position: absolute;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#combat-results-panel .close-button {
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#pokemon-obtained,
+#pokemon-lost {
+  position: relative;
+  width: 45%;
+  height: 70%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 5%;
+}
+#pokemon-obtained h4,
+#pokemon-lost h4 {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#pokemon-obtained img,
+#pokemon-lost img {
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: .5vw;
+  
+}
+#pokemon-obtained img{
+  outline: 5px solid rgb(167, 255, 167);
+}
+#pokemon-lost img{
+  outline: 5px solid rgb(255, 125, 125);
 }
 
 @keyframes vibrar {
   0% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-10%);
   }
+
   50% {
     transform: translateX(10%);
   }
+
   75% {
     transform: translateX(-10%);
   }
+
   100% {
     transform: translateX(0);
   }
 }
 
 @keyframes parpadeo {
+
   0%,
   20%,
   40%,
@@ -181,6 +269,7 @@
   80% {
     opacity: 1;
   }
+
   10%,
   30%,
   50%,
@@ -191,12 +280,17 @@
 
 @keyframes crecer {
   0% {
-    transform: scale(0.1); /* Muy pequeño al inicio */
+    transform: scale(0.1);
+    /* Muy pequeño al inicio */
   }
+
   50% {
-    transform: scale(1.3); /* Se agranda a 1.5 veces su tamaño */
+    transform: scale(1.3);
+    /* Se agranda a 1.5 veces su tamaño */
   }
+
   100% {
-    transform: scale(1); /* Regresa al tamaño normal */
+    transform: scale(1);
+    /* Regresa al tamaño normal */
   }
 }
