@@ -176,8 +176,16 @@ main {
   min-height: 100vh;
   background-image: url("../ASSETS/images/a1TKOxQ.jpeg");
   background-size: 60vw 60vw;
+  animation: moverFondo 30s linear infinite;
 }
-
+@keyframes moverFondo {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -60vw -60vw;
+  }
+}
 h1 {
   font-family: var(--font-title-1);
   font-size: 4vw;
